@@ -1,7 +1,7 @@
-import type { Example } from './dist/plugin.cjs';
+import type { uiPlugin } from './dist/plugin.cjs';
 
 declare global {
-  var example: Example;
+  var uiPlugin: uiPlugin;
 }
 
 export {};
