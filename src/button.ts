@@ -74,7 +74,6 @@ export function createButtonComponent(
       );
       const font = currentOpt.font ?? theme?.typography?.fontFamily;
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const drawRect = k.drawRect as unknown as
         ((opt: Record<string, unknown>) => void) | undefined;
       drawRect?.({
@@ -85,7 +84,6 @@ export function createButtonComponent(
         radius,
       });
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const drawText = k.drawText as unknown as
         ((opt: Record<string, unknown>) => void) | undefined;
       drawText?.({

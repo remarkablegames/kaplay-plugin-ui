@@ -109,10 +109,8 @@ describe('button component', () => {
     const { k } = makeK();
     const comp = uiPlugin(k).button('hello');
     comp.draw?.();
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(k.drawRect).toHaveBeenCalled();
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(k.drawText).toHaveBeenCalled();
+    expect(k.drawRect).toHaveBeenCalledOnce();
+    expect(k.drawText).toHaveBeenCalledOnce();
   });
 
   it('does not throw when draw methods are missing', () => {
@@ -149,8 +147,7 @@ describe('button component', () => {
     expect(comp.width).toBe(150);
     expect(comp.height).toBe(50);
     comp.draw?.();
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(k.drawRect).toHaveBeenCalled();
+    expect(k.drawRect).toHaveBeenCalledOnce();
   });
 
   it('direct factory creates component', () => {
@@ -166,7 +163,7 @@ describe('addButton helper', () => {
     const { k, addFn } = makeK();
     const ui = uiPlugin(k);
     const btn = ui.addButton('Click', { onClick: vi.fn(), radius: 6 });
-    expect(addFn).toHaveBeenCalled();
+    expect(addFn).toHaveBeenCalledOnce();
     expect(btn).toBeDefined();
     expect(typeof btn.setButtonText).toBe('function');
   });
@@ -179,9 +176,9 @@ describe('addButton helper', () => {
       onHover: ReturnType<typeof vi.fn>;
       onHoverEnd: ReturnType<typeof vi.fn>;
     };
-    expect(btn.onClick).toHaveBeenCalled();
-    expect(btn.onHover).toHaveBeenCalled();
-    expect(btn.onHoverEnd).toHaveBeenCalled();
+    expect(btn.onClick).toHaveBeenCalledOnce();
+    expect(btn.onHover).toHaveBeenCalledOnce();
+    expect(btn.onHoverEnd).toHaveBeenCalledOnce();
   });
 
   it('addButton setters update state', () => {
