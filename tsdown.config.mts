@@ -2,7 +2,7 @@ import { defineConfig, type UserConfig } from 'tsdown';
 
 const config = {
   entry: 'src/plugin.ts',
-  globalName: 'KaplayPluginTemplate',
+  globalName: 'KaplayPluginUI',
   sourcemap: true,
   deps: {
     neverBundle: ['kaplay'],

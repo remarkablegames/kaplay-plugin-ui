@@ -57,7 +57,7 @@ To load the plugin using a script:
 
 <script>
   const k = kaplay({
-    plugins: [KaplayPluginTemplate.examplePlugin],
+    plugins: [KaplayPluginUI.examplePlugin],
   });
 
   k.example();
