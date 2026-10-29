@@ -1,10 +1,10 @@
-# kaplay-plugin-template
+# kaplay-plugin-ui
 
-[![NPM](https://nodei.co/npm/kaplay-plugin-template.svg)](https://www.npmjs.com/package/kaplay-plugin-template)
+[![NPM](https://nodei.co/npm/kaplay-plugin-ui.svg)](https://www.npmjs.com/package/kaplay-plugin-ui)
 
-[![NPM version](https://img.shields.io/npm/v/kaplay-plugin-template.svg)](https://www.npmjs.com/package/kaplay-plugin-template)
-[![build](https://github.com/remarkablegames/kaplay-plugin-template/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/kaplay-plugin-template/actions/workflows/build.yml)
-[![codecov](https://codecov.io/gh/remarkablegames/kaplay-plugin-template/graph/badge.svg?token=E7kjfLCpkM)](https://codecov.io/gh/remarkablegames/kaplay-plugin-template)
+[![NPM version](https://img.shields.io/npm/v/kaplay-plugin-ui.svg)](https://www.npmjs.com/package/kaplay-plugin-ui)
+[![build](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui/graph/badge.svg?token=E7kjfLCpkM)](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui)
 
 Kaplay Plugin Template
 
@@ -18,16 +18,16 @@ npm install kaplay
 
 ## Install
 
-[NPM](https://www.npmjs.com/package/kaplay-plugin-template):
+[NPM](https://www.npmjs.com/package/kaplay-plugin-ui):
 
 ```sh
-npm install kaplay-plugin-template
+npm install kaplay-plugin-ui
 ```
 
-[CDN](https://unpkg.com/browse/kaplay-plugin-template/):
+[CDN](https://unpkg.com/browse/kaplay-plugin-ui/):
 
 ```html
-<script src="https://unpkg.com/kaplay-plugin-template@latest/dist/plugin.umd.js"></script>
+<script src="https://unpkg.com/kaplay-plugin-ui@latest/dist/plugin.umd.js"></script>
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ Import the plugin:
 
 ```ts
 import kaplay from 'kaplay';
-import { examplePlugin } from 'kaplay-plugin-template';
+import { examplePlugin } from 'kaplay-plugin-ui';
 
 const k = kaplay({
   plugins: [examplePlugin],
@@ -53,7 +53,7 @@ To load the plugin using a script:
 
 ```html
 <script src="https://unpkg.com/kaplay@latest/dist/kaplay.js"></script>
-<script src="https://unpkg.com/kaplay-plugin-template@latest/dist/plugin.umd.js"></script>
+<script src="https://unpkg.com/kaplay-plugin-ui@latest/dist/plugin.umd.js"></script>
 
 <script>
   const k = kaplay({
@@ -70,4 +70,4 @@ Release is automated with [Release Please](https://github.com/googleapis/release
 
 ## License
 
-[MIT](https://github.com/remarkablegames/kaplay-plugin-template/blob/master/LICENSE)
+[MIT](https://github.com/remarkablegames/kaplay-plugin-ui/blob/master/LICENSE)
