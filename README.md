@@ -6,7 +6,7 @@
 [![build](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui/graph/badge.svg?token=E7kjfLCpkM)](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui)
 
-Kaplay Plugin Template
+🦖 KAPLAY plugin UI.
 
 ## Prerequisites
 

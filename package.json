@@ -1,7 +1,7 @@
 {
   "name": "kaplay-plugin-ui",
   "version": "1.0.0-alpha",
-  "description": "Kaplay Plugin Template",
+  "description": "Kaplay plugin UI",
   "author": "Mark <mark@remarkablemark.org> (https://remarkablemark.org)",
   "main": "./dist/plugin.cjs",
   "module": "./dist/plugin.mjs",
@@ -55,6 +55,7 @@
   "keywords": [
     "kaplay",
     "plugin",
+    "ui",
     "game"
   ],
   "peerDependencies": {
