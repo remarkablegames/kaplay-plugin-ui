@@ -38,6 +38,7 @@ function makeK(overrides: Record<string, unknown> = {}) {
     rgb: vi.fn((r: number, g: number, b: number) => ({ r, g, b })),
     drawRect: vi.fn(),
     drawText: vi.fn(),
+    setCursor: vi.fn(),
     Rect: class MockRect {
       pos: { x: number; y: number };
       width: number;

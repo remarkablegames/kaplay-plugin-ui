@@ -178,10 +178,12 @@ export function createButtonObject(
   obj.onHover(() => {
     obj.color = hoverColor;
     obj.scale = k.vec2(1.05, 1.05);
+    k.setCursor('pointer');
   });
   obj.onHoverEnd(() => {
     obj.color = currentColor;
     obj.scale = k.vec2(1, 1);
+    k.setCursor('default');
   });
 
   obj.setSize = (w: number, h: number): void => {
