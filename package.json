@@ -1,0 +1,97 @@
+{
+  "name": "kaplay-plugin-template",
+  "version": "1.0.0-alpha",
+  "description": "Kaplay Plugin Template",
+  "author": "Mark <mark@remarkablemark.org> (https://remarkablemark.org)",
+  "main": "./dist/plugin.cjs",
+  "module": "./dist/plugin.mjs",
+  "types": "./dist/plugin.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/plugin.d.mts",
+        "default": "./dist/plugin.mjs"
+      },
+      "require": {
+        "types": "./dist/plugin.d.cts",
+        "default": "./dist/plugin.cjs"
+      }
+    },
+    "./global": {
+      "import": {
+        "types": "./global.d.ts",
+        "default": "./global.js"
+      },
+      "require": {
+        "types": "./global.d.ts",
+        "default": "./global.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rm -rf coverage dist docs",
+    "docs": "typedoc",
+    "docs:watch": "npm run docs -- --watch",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:package": "publint",
+    "lint:tsc": "tsc",
+    "lint:types": "npx @arethetypeswrong/cli --pack",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build && npm run lint && npm run lint:tsc && npm run test:ci",
+    "start": "vite --open",
+    "test": "vitest run",
+    "test:ci": "CI=true npm test -- --color --coverage",
+    "test:watch": "vitest --coverage.enabled=false"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remarkablegames/kaplay-plugin-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/remarkablegames/kaplay-plugin-template/issues"
+  },
+  "keywords": [
+    "kaplay",
+    "plugin",
+    "game"
+  ],
+  "peerDependencies": {
+    "kaplay": "*"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.6",
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint": "10.13.0",
+    "eslint-plugin-prettier": "5.5.7",
+    "eslint-plugin-simple-import-sort": "14.0.0",
+    "eslint-plugin-tsdoc": "0.5.4",
+    "husky": "9.1.7",
+    "kaplay": "3001.0.19",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.10",
+    "publint": "0.3.25",
+    "tsdown": "0.23.4",
+    "typedoc": "0.28.20",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  },
+  "files": [
+    "dist/",
+    "global.d.ts",
+    "global.js"
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/remarkablemark"
+    }
+  ],
+  "license": "MIT"
+}
