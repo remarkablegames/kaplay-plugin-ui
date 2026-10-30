@@ -13,13 +13,12 @@ describe('uiPlugin', () => {
   it('registers button helpers', () => {
     const { k } = makeK();
     const result = uiPlugin(k);
-    expect(result.button).toBeTypeOf('function');
     expect(result.addButton).toBeTypeOf('function');
     expect(result.setTheme).toBeTypeOf('function');
     expect(result.getTheme).toBeTypeOf('function');
   });
 
-  it('getTheme returns current theme', () => {
+  it('returns current theme', () => {
     const { k } = makeK();
     const ui = uiPlugin(k);
     ui.setTheme({ spacing: 8 });

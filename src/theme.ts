@@ -1,19 +1,19 @@
 import type { DeepPartial, Theme } from './types';
 
-const DEFAULT_PRIMARY = '#4f8cff';
-const DEFAULT_TEXT = '#ffffff';
+const PRIMARY = '#4f8cff';
+const TEXT = '#ffffff';
 
-/** Default theme used when no theme is provided. */
-export const defaultTheme: Theme = {
+/** Default theme. */
+const theme: Theme = {
   palette: {
-    primary: DEFAULT_PRIMARY,
-    secondary: DEFAULT_PRIMARY,
+    primary: PRIMARY,
+    secondary: PRIMARY,
     background: '#111827',
     surface: '#1f2937',
-    text: DEFAULT_TEXT,
-    textSecondary: DEFAULT_TEXT,
-    hover: DEFAULT_PRIMARY,
-    pressed: DEFAULT_PRIMARY,
+    text: TEXT,
+    textSecondary: TEXT,
+    hover: PRIMARY,
+    pressed: PRIMARY,
     disabled: '#6b7280',
     error: '#ef4444',
   },
@@ -42,7 +42,7 @@ export const defaultTheme: Theme = {
     },
     tooltip: {
       background: '#111827',
-      textColor: DEFAULT_TEXT,
+      textColor: TEXT,
       delay: 300,
     },
   },
@@ -51,25 +51,25 @@ export const defaultTheme: Theme = {
 /** Resolve a partial theme into a fully resolved theme. */
 export function resolveTheme(input?: DeepPartial<Theme>): Theme {
   return {
-    palette: { ...defaultTheme.palette, ...input?.palette },
-    typography: { ...defaultTheme.typography, ...input?.typography },
-    shape: { ...defaultTheme.shape, ...input?.shape },
-    spacing: input?.spacing ?? defaultTheme.spacing,
+    palette: { ...theme.palette, ...input?.palette },
+    typography: { ...theme.typography, ...input?.typography },
+    shape: { ...theme.shape, ...input?.shape },
+    spacing: input?.spacing ?? theme.spacing,
     components: {
       button: {
-        ...defaultTheme.components.button,
+        ...theme.components.button,
         ...input?.components?.button,
         width:
           input?.components?.button?.width ??
           input?.components?.button?.minWidth ??
-          defaultTheme.components.button.width,
+          theme.components.button.width,
       },
       modal: {
-        ...defaultTheme.components.modal,
+        ...theme.components.modal,
         ...input?.components?.modal,
       },
       tooltip: {
-        ...defaultTheme.components.tooltip,
+        ...theme.components.tooltip,
         ...input?.components?.tooltip,
       },
     },

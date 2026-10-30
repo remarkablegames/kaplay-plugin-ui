@@ -1,7 +1,29 @@
-import type { Color as KaplayColor, Comp, Rect } from 'kaplay';
+import type { Color, Vec2 } from 'kaplay';
 
-/** Color value accepted by the UI theme and components. */
-export type Color = KaplayColor | string;
+import { createButton } from './button';
+
+export interface UIPlugin {
+  addButton: (
+    text?: string,
+    opt?: ButtonOpt & {
+      pos?: Vec2;
+      onClick?: () => void;
+      color?: string | Color;
+      hoverColor?: string | Color;
+      pressedColor?: string | Color;
+      textColor?: string | Color;
+    },
+  ) => ReturnType<typeof createButton>;
+
+  getTheme: () => Theme;
+
+  setTheme: (theme: DeepPartial<Theme>) => void;
+}
+
+declare module 'kaplay' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface KAPLAYCtx extends UIPlugin {}
+}
 
 /** Recursively partial version of a type. */
 export type DeepPartial<T> = {
@@ -10,16 +32,16 @@ export type DeepPartial<T> = {
 
 export interface Theme {
   palette: {
-    primary: Color;
-    secondary: Color;
-    background: Color;
-    surface: Color;
-    text: Color;
-    textSecondary: Color;
-    hover: Color;
-    pressed: Color;
-    disabled: Color;
-    error: Color;
+    primary: string | Color;
+    secondary: string | Color;
+    background: string | Color;
+    surface: string | Color;
+    text: string | Color;
+    textSecondary: string | Color;
+    hover: string | Color;
+    pressed: string | Color;
+    disabled: string | Color;
+    error: string | Color;
   };
   typography: {
     fontFamily: string;
@@ -45,32 +67,22 @@ export interface Theme {
       borderRadius: number;
     };
     tooltip: {
-      background: Color;
-      textColor: Color;
+      background: string | Color;
+      textColor: string | Color;
       delay: number;
     };
   };
 }
 
-/** Options for a single button. */
-export interface ButtonCompOpt {
+/** Button options. */
+export interface ButtonOpt {
   width?: number;
   height?: number;
   size?: number;
   font?: string;
-  fill?: Color;
-  textColor?: Color;
+  fill?: string | Color;
+  textColor?: string | Color;
   radius?: number;
-  hoverFill?: Color;
-  pressedFill?: Color;
-}
-
-/** The `button` component. */
-export interface ButtonComp extends Comp {
-  id: 'button';
-  text: string;
-  width: number;
-  height: number;
-  renderArea(): Rect;
-  setStyle(opt: Partial<ButtonCompOpt>): void;
+  hoverFill?: string | Color;
+  pressedFill?: string | Color;
 }
