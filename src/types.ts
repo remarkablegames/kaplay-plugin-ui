@@ -1,7 +1,56 @@
-import type { Color, Comp, Rect } from 'kaplay';
+import type { Color as KaplayColor, Comp, Rect } from 'kaplay';
 
 /** Color value accepted by the UI theme and components. */
-export type UIColor = Color | string;
+export type Color = KaplayColor | string;
+
+/** Recursively partial version of a type. */
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
+
+export interface Theme {
+  palette: {
+    primary: Color;
+    secondary: Color;
+    background: Color;
+    surface: Color;
+    text: Color;
+    textSecondary: Color;
+    hover: Color;
+    pressed: Color;
+    disabled: Color;
+    error: Color;
+  };
+  typography: {
+    fontFamily: string;
+    fontSize: number;
+    fontWeight: number | string;
+    lineHeight: number;
+  };
+  shape: {
+    borderRadius: number;
+  };
+  spacing: number;
+  components: {
+    button: {
+      width: number;
+      height: number;
+      minWidth: number;
+      paddingX: number;
+      paddingY: number;
+      textTransform: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+    };
+    modal: {
+      backdropOpacity: number;
+      borderRadius: number;
+    };
+    tooltip: {
+      background: Color;
+      textColor: Color;
+      delay: number;
+    };
+  };
+}
 
 /** Options for a single button. */
 export interface ButtonCompOpt {
@@ -9,56 +58,11 @@ export interface ButtonCompOpt {
   height?: number;
   size?: number;
   font?: string;
-  fill?: UIColor;
-  textColor?: UIColor;
+  fill?: Color;
+  textColor?: Color;
   radius?: number;
-  hoverFill?: UIColor;
-  pressedFill?: UIColor;
-}
-
-/** Theme tokens shared across UI components. */
-export interface UITheme {
-  palette?: {
-    primary?: UIColor;
-    secondary?: UIColor;
-    background?: UIColor;
-    surface?: UIColor;
-    text?: UIColor;
-    textSecondary?: UIColor;
-    hover?: UIColor;
-    pressed?: UIColor;
-    disabled?: UIColor;
-    error?: UIColor;
-  };
-  typography?: {
-    fontFamily?: string;
-    fontSize?: number;
-    fontWeight?: number | string;
-    lineHeight?: number;
-  };
-  shape?: {
-    borderRadius?: number;
-  };
-  spacing?: number;
-  components?: {
-    button?: {
-      width?: number;
-      height?: number;
-      minWidth?: number;
-      paddingX?: number;
-      paddingY?: number;
-      textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
-    };
-    modal?: {
-      backdropOpacity?: number;
-      borderRadius?: number;
-    };
-    tooltip?: {
-      background?: UIColor;
-      textColor?: UIColor;
-      delay?: number;
-    };
-  };
+  hoverFill?: Color;
+  pressedFill?: Color;
 }
 
 /** The `button` component. */

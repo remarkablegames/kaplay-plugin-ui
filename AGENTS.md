@@ -10,6 +10,7 @@ description: Expert TypeScript developer for this KAPLAY plugin
 - Preserve the existing TypeScript, tsdown, and Vitest setup
 - Keep changes minimal and aligned with the package structure
 - Favor clarity over abstraction unless duplication is real
+- Don't create unnecessary aliases; expose a single, canonical name for each API (DRY)
 
 ## Tech Stack
 

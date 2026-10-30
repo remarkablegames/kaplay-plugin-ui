@@ -1,10 +1,17 @@
 import type { GameObj, KAPLAYCtx, Vec2 } from 'kaplay';
 
 import { createButtonComponent, createButtonObject } from './button';
-import type { ButtonComp, ButtonCompOpt, UIColor, UITheme } from './types';
+import { resolveTheme } from './theme';
+import type {
+  ButtonComp,
+  ButtonCompOpt,
+  Color,
+  DeepPartial,
+  Theme,
+} from './types';
 
 export { createButtonComponent, createButtonObject } from './button';
-export type { ButtonComp, ButtonCompOpt, UIColor, UITheme } from './types';
+export type { ButtonComp, ButtonCompOpt, Color, Theme } from './types';
 
 declare module 'kaplay' {
   interface KAPLAYCtx {
@@ -14,38 +21,27 @@ declare module 'kaplay' {
       opt?: ButtonCompOpt & {
         pos?: Vec2;
         onClick?: () => void;
-        color?: UIColor;
-        hoverColor?: UIColor;
-        pressedColor?: UIColor;
-        textColor?: UIColor;
+        color?: Color;
+        hoverColor?: Color;
+        pressedColor?: Color;
+        textColor?: Color;
       },
     ) => GameObj;
-    addTextButton: (
-      text?: string,
-      opt?: ButtonCompOpt & {
-        pos?: Vec2;
-        onClick?: () => void;
-        color?: UIColor;
-        hoverColor?: UIColor;
-        pressedColor?: UIColor;
-        textColor?: UIColor;
-      },
-    ) => GameObj;
-    textButton: (text?: string, opt?: ButtonCompOpt) => ButtonComp;
-    uiButton: (text?: string, opt?: ButtonCompOpt) => ButtonComp;
-    setTheme: (theme: UITheme) => void;
-    getTheme: () => UITheme | undefined;
+    setTheme: (theme: DeepPartial<Theme>) => void;
+    getTheme: () => Theme;
   }
 }
 
 /** KAPLAY UI plugin. */
-export function uiPlugin(k: KAPLAYCtx, theme?: UITheme) {
-  let currentTheme: UITheme | undefined = theme;
+export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
+  let userTheme: DeepPartial<Theme> = theme;
+  let currentTheme: Theme = resolveTheme(userTheme);
 
-  const getTheme = (): UITheme | undefined => currentTheme;
+  const getTheme = (): Theme => currentTheme;
 
-  const setTheme = (next: UITheme): void => {
-    currentTheme = { ...currentTheme, ...next };
+  const setTheme = (next: DeepPartial<Theme>): void => {
+    userTheme = { ...userTheme, ...next };
+    currentTheme = resolveTheme(userTheme);
   };
 
   const button = (text = '', opt: ButtonCompOpt = {}): ButtonComp => {
@@ -57,10 +53,10 @@ export function uiPlugin(k: KAPLAYCtx, theme?: UITheme) {
     opt: ButtonCompOpt & {
       pos?: Vec2;
       onClick?: () => void;
-      color?: UIColor;
-      hoverColor?: UIColor;
-      pressedColor?: UIColor;
-      textColor?: UIColor;
+      color?: Color;
+      hoverColor?: Color;
+      pressedColor?: Color;
+      textColor?: Color;
     } = {},
   ): GameObj => {
     return createButtonObject(k, currentTheme, text, opt);
@@ -69,13 +65,7 @@ export function uiPlugin(k: KAPLAYCtx, theme?: UITheme) {
   return {
     button,
     addButton,
-    addTextButton: addButton,
-    textButton: button,
-    uiButton: button,
     setTheme,
     getTheme,
   };
 }
-
-export const buttonPlugin = uiPlugin;
-export const UIPlugin = uiPlugin;

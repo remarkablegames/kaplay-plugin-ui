@@ -1,14 +1,10 @@
-import type { GameObj, KAPLAYCtx, Vec2 } from 'kaplay';
+import type { Comp, GameObj, KAPLAYCtx, Vec2 } from 'kaplay';
 
-import type { ButtonComp, ButtonCompOpt, UIColor, UITheme } from './types';
-
-function resolveNumber(value: number | undefined, fallback: number): number {
-  return value ?? fallback;
-}
+import type { ButtonComp, ButtonCompOpt, Color, Theme } from './types';
 
 export function createButtonComponent(
   k: KAPLAYCtx,
-  theme: UITheme | undefined,
+  theme: Theme,
   text: string,
   opt: ButtonCompOpt,
 ): ButtonComp {
@@ -16,16 +12,11 @@ export function createButtonComponent(
   let currentOpt: ButtonCompOpt = { ...opt };
 
   const readWidth = (): number => {
-    return (
-      currentOpt.width ??
-      theme?.components?.button?.width ??
-      theme?.components?.button?.minWidth ??
-      120
-    );
+    return currentOpt.width ?? theme.components.button.width;
   };
 
   const readHeight = (): number => {
-    return currentOpt.height ?? theme?.components?.button?.height ?? 40;
+    return currentOpt.height ?? theme.components.button.height;
   };
 
   const comp: ButtonComp = {
@@ -60,19 +51,11 @@ export function createButtonComponent(
     draw(): void {
       const width = comp.width;
       const height = comp.height;
-      const radius = resolveNumber(
-        currentOpt.radius ?? theme?.shape?.borderRadius,
-        0,
-      );
-      const fill =
-        currentOpt.fill ?? theme?.palette?.primary ?? k.rgb(80, 160, 255);
-      const textColor =
-        currentOpt.textColor ?? theme?.palette?.text ?? k.rgb(255, 255, 255);
-      const size = resolveNumber(
-        currentOpt.size ?? theme?.typography?.fontSize,
-        18,
-      );
-      const font = currentOpt.font ?? theme?.typography?.fontFamily;
+      const radius = currentOpt.radius ?? theme.shape.borderRadius;
+      const fill = currentOpt.fill ?? theme.palette.primary;
+      const textColor = currentOpt.textColor ?? theme.palette.text;
+      const size = currentOpt.size ?? theme.typography.fontSize;
+      const font = currentOpt.font ?? theme.typography.fontFamily;
 
       const drawRect = k.drawRect as unknown as
         ((opt: Record<string, unknown>) => void) | undefined;
@@ -105,40 +88,30 @@ export function createButtonComponent(
 
 export function createButtonObject(
   k: KAPLAYCtx,
-  theme: UITheme | undefined,
+  theme: Theme,
   text: string,
   opt: ButtonCompOpt & {
     pos?: Vec2;
     onClick?: () => void;
-    color?: UIColor;
-    hoverColor?: UIColor;
-    pressedColor?: UIColor;
-    textColor?: UIColor;
+    color?: Color;
+    hoverColor?: Color;
+    pressedColor?: Color;
+    textColor?: Color;
   },
 ): GameObj {
-  const width = resolveNumber(
-    opt.width ??
-      theme?.components?.button?.width ??
-      theme?.components?.button?.minWidth,
-    120,
-  );
-  const height = resolveNumber(
-    opt.height ?? theme?.components?.button?.height,
-    40,
-  );
-  const radius = resolveNumber(opt.radius ?? theme?.shape?.borderRadius, 0);
-  const baseColor =
-    opt.color ?? opt.fill ?? theme?.palette?.primary ?? k.rgb(80, 160, 255);
-  const hoverColor = opt.hoverColor ?? theme?.palette?.hover ?? baseColor;
-  const pressedColor = opt.pressedColor ?? theme?.palette?.pressed ?? baseColor;
-  const textColor =
-    opt.textColor ?? theme?.palette?.text ?? k.rgb(255, 255, 255);
-  const size = resolveNumber(opt.size ?? theme?.typography?.fontSize, 18);
-  const font = opt.font ?? theme?.typography?.fontFamily;
+  const width = opt.width ?? theme.components.button.width;
+  const height = opt.height ?? theme.components.button.height;
+  const radius = opt.radius ?? theme.shape.borderRadius;
+  const baseColor = opt.color ?? opt.fill ?? theme.palette.primary;
+  const hoverColor = opt.hoverColor ?? theme.palette.hover;
+  const pressedColor = opt.pressedColor ?? theme.palette.pressed;
+  const textColor = opt.textColor ?? theme.palette.text;
+  const size = opt.size ?? theme.typography.fontSize;
+  const font = opt.font ?? theme.typography.fontFamily;
   const pos = opt.pos ?? k.vec2();
 
   interface ButtonGameObj {
-    add: (comps: unknown[]) => { text: string; textSize: number };
+    add: (comps: Comp[]) => { text: string; textSize: number };
     onClick: (cb: () => void) => void;
     onHover: (cb: () => void) => void;
     onHoverEnd: (cb: () => void) => void;
@@ -148,7 +121,7 @@ export function createButtonObject(
     scale: { x: number; y: number };
     pos: { x: number; y: number };
     setSize: (w: number, h: number) => void;
-    setButtonColor: (color: UIColor) => void;
+    setButtonColor: (color: Color) => void;
     setButtonText: (value: string) => void;
     setButtonTextSize: (value: number) => void;
     setPosition: (x: number, y: number) => void;
@@ -169,7 +142,7 @@ export function createButtonObject(
   ]) as GameObj & { text: string; textSize: number };
 
   let currentText = text;
-  let currentColor: UIColor = baseColor;
+  let currentColor: Color = baseColor;
 
   obj.onClick(() => {
     obj.color = pressedColor;
@@ -191,7 +164,7 @@ export function createButtonObject(
     obj.height = h;
   };
 
-  obj.setButtonColor = (color: UIColor): void => {
+  obj.setButtonColor = (color: Color): void => {
     currentColor = color;
     obj.color = color;
   };

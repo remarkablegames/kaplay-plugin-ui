@@ -2,6 +2,8 @@ import type { KAPLAYCtx } from 'kaplay';
 
 import { createButtonComponent, createButtonObject } from '../src/button';
 import { uiPlugin } from '../src/plugin';
+import { resolveTheme } from '../src/theme';
+import type { Color } from '../src/types';
 
 function makeK(overrides: Record<string, unknown> = {}) {
   const rectFn = vi.fn(() => ({}));
@@ -137,8 +139,8 @@ describe('button component', () => {
     const ui = uiPlugin(k);
     ui.setTheme({
       palette: {
-        primary: { r: 1, g: 2, b: 3 } as never,
-        text: { r: 4, g: 5, b: 6 } as never,
+        primary: { r: 1, g: 2, b: 3 } as Color,
+        text: { r: 4, g: 5, b: 6 } as Color,
       },
       shape: { borderRadius: 8 },
       typography: { fontSize: 24, fontFamily: 'Arial' },
@@ -151,11 +153,24 @@ describe('button component', () => {
     expect(k.drawRect).toHaveBeenCalledOnce();
   });
 
+  it('uses theme minWidth when width is missing', () => {
+    const { k } = makeK();
+    const ui = uiPlugin(k);
+    ui.setTheme({
+      components: { button: { minWidth: 130 } },
+    });
+    const comp = ui.button('min');
+    expect(comp.width).toBe(130);
+    expect(comp.height).toBe(40);
+  });
+
   it('direct factory creates component', () => {
     const { k } = makeK();
-    const comp = createButtonComponent(k, undefined, 'direct', {});
+    const comp = createButtonComponent(k, resolveTheme(), 'direct', {});
     expect(comp.id).toBe('button');
     expect(comp.text).toBe('direct');
+    expect(comp.width).toBe(120);
+    expect(comp.height).toBe(40);
   });
 });
 
@@ -213,7 +228,7 @@ describe('addButton helper', () => {
 
   it('direct factory creates object', () => {
     const { k } = makeK();
-    const obj = createButtonObject(k, undefined, 'direct', {});
+    const obj = createButtonObject(k, resolveTheme(), 'direct', {});
     expect(obj).toBeDefined();
   });
 });
