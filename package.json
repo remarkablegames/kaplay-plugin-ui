@@ -1,6 +1,6 @@
 {
   "name": "kaplay-plugin-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Kaplay plugin UI",
   "author": "Mark <mark@remarkablemark.org> (https://remarkablemark.org)",
   "main": "./dist/plugin.cjs",

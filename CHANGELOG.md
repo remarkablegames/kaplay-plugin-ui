@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.0...v1.0.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* fix global types, fix button colors, and remove button component ([9adf688](https://github.com/remarkablegames/kaplay-plugin-ui/commit/9adf688da45217a2594fe243c4a2321471a831e6))
+
 ## 1.0.0 (2026-10-30)
 
 
