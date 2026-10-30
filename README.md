@@ -6,7 +6,11 @@
 [![build](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui/graph/badge.svg?token=54qf1pKjqI)](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui)
 
-🦖 KAPLAY plugin UI.
+🦖 KAPLAY plugin UI:
+
+- `addButton(text?, opt?)`: button game object
+- `button(text?, opt?)`: button component (use in `add([button(...)])`)
+- `setTheme(theme)`: update theme
 
 ## Prerequisites
 
