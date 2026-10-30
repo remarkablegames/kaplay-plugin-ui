@@ -6,11 +6,11 @@
 [![build](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/kaplay-plugin-ui/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui/graph/badge.svg?token=54qf1pKjqI)](https://codecov.io/gh/remarkablegames/kaplay-plugin-ui)
 
-🦖 KAPLAY plugin UI:
+🦖 KAPLAY plugin UI (see [API](#api)):
 
-- `addButton(text?, opt?)`: button game object
-- `button(text?, opt?)`: button component (use in `add([button(...)])`)
-- `setTheme(theme)`: update theme
+- `addButton`
+- `getTheme`
+- `setTheme`
 
 ## Prerequisites
 
@@ -47,28 +47,10 @@ const k = kaplay({
 });
 ```
 
-Use the plugin:
+Import the plugin's global TypeScript definitions:
 
 ```ts
-const button = k.addButton('Start', {
-  onClick: () => {
-    k.go('game');
-  },
-});
-```
-
-Customize the theme:
-
-```ts
-k.setTheme({
-  palette: {
-    primary: k.rgb(80, 160, 255),
-    text: k.rgb(255, 255, 255),
-  },
-  shape: {
-    borderRadius: 8,
-  },
-});
+import 'kaplay-plugin-ui/global';
 ```
 
 To load the plugin using a script:
@@ -84,6 +66,61 @@ To load the plugin using a script:
 
   const button = k.addButton('Start');
 </script>
+```
+
+Use the plugin:
+
+```ts
+k.setTheme({
+  shape: {
+    borderRadius: 8,
+  },
+});
+
+k.addButton('Start', {
+  onClick: () => {
+    k.go('game');
+  },
+});
+```
+
+## API
+
+### Button
+
+Add button game object:
+
+```ts
+addButton(text, opt);
+```
+
+Update button text:
+
+```ts
+const button = addButton(text);
+button.label.text = 'Hello';
+```
+
+### Theme
+
+Retrieve theme:
+
+```ts
+getTheme();
+```
+
+Customize theme:
+
+```ts
+setTheme({
+  palette: {
+    primary: rgb(80, 160, 255),
+    text: rgb(255, 255, 255),
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
 ```
 
 ## Release

@@ -1,39 +1,16 @@
-import type { GameObj, KAPLAYCtx, Vec2 } from 'kaplay';
+import type { Color, KAPLAYCtx, Vec2 } from 'kaplay';
 
-import { createButtonComponent, createButtonObject } from './button';
+import { createButton } from './button';
 import { resolveTheme } from './theme';
-import type {
-  ButtonComp,
-  ButtonCompOpt,
-  Color,
-  DeepPartial,
-  Theme,
-} from './types';
+import type { ButtonOpt, DeepPartial, Theme, UIPlugin } from './types';
 
-export { createButtonComponent, createButtonObject } from './button';
-export type { ButtonComp, ButtonCompOpt, Color, Theme } from './types';
-
-declare module 'kaplay' {
-  interface KAPLAYCtx {
-    button: (text?: string, opt?: ButtonCompOpt) => ButtonComp;
-    addButton: (
-      text?: string,
-      opt?: ButtonCompOpt & {
-        pos?: Vec2;
-        onClick?: () => void;
-        color?: Color;
-        hoverColor?: Color;
-        pressedColor?: Color;
-        textColor?: Color;
-      },
-    ) => GameObj;
-    setTheme: (theme: DeepPartial<Theme>) => void;
-    getTheme: () => Theme;
-  }
-}
+export type { ButtonOpt, Theme, UIPlugin };
 
 /** KAPLAY UI plugin. */
-export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
+export function uiPlugin(
+  k: KAPLAYCtx,
+  theme: DeepPartial<Theme> = {},
+): UIPlugin {
   let userTheme: DeepPartial<Theme> = theme;
   let currentTheme: Theme = resolveTheme(userTheme);
 
@@ -44,26 +21,21 @@ export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
     currentTheme = resolveTheme(userTheme);
   };
 
-  const button = (text = '', opt: ButtonCompOpt = {}): ButtonComp => {
-    return createButtonComponent(k, currentTheme, text, opt);
-  };
-
   const addButton = (
     text = '',
-    opt: ButtonCompOpt & {
+    opt: ButtonOpt & {
       pos?: Vec2;
       onClick?: () => void;
-      color?: Color;
-      hoverColor?: Color;
-      pressedColor?: Color;
-      textColor?: Color;
+      color?: string | Color;
+      hoverColor?: string | Color;
+      pressedColor?: string | Color;
+      textColor?: string | Color;
     } = {},
-  ): GameObj => {
-    return createButtonObject(k, currentTheme, text, opt);
+  ) => {
+    return createButton(k, currentTheme, text, opt);
   };
 
   return {
-    button,
     addButton,
     setTheme,
     getTheme,
