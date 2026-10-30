@@ -36,17 +36,35 @@ Import the plugin:
 
 ```ts
 import kaplay from 'kaplay';
-import { examplePlugin } from 'kaplay-plugin-ui';
+import { uiPlugin } from 'kaplay-plugin-ui';
 
 const k = kaplay({
-  plugins: [examplePlugin],
+  plugins: [uiPlugin],
 });
 ```
 
 Use the plugin:
 
 ```ts
-k.example();
+const button = k.addButton('Start', {
+  onClick: () => {
+    k.go('game');
+  },
+});
+```
+
+Customize the theme:
+
+```ts
+k.setTheme({
+  palette: {
+    primary: k.rgb(80, 160, 255),
+    text: k.rgb(255, 255, 255),
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
 ```
 
 To load the plugin using a script:
@@ -57,10 +75,10 @@ To load the plugin using a script:
 
 <script>
   const k = kaplay({
-    plugins: [KaplayPluginUI.examplePlugin],
+    plugins: [KaplayPluginUI.uiPlugin],
   });
 
-  k.example();
+  const button = k.addButton('Start');
 </script>
 ```
 

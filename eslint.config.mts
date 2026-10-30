@@ -39,6 +39,7 @@ export default defineConfig([
     },
 
     rules: {
+      '@typescript-eslint/unbound-method': 'off',
       'no-console': 'error',
       'prettier/prettier': 'error',
       'simple-import-sort/exports': 'error',

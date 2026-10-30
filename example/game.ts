@@ -1,9 +1,14 @@
 import kaplay from 'kaplay';
 
-import { examplePlugin } from '../src/plugin';
+import { uiPlugin } from '../src/plugin';
 
 const k = kaplay({
-  plugins: [examplePlugin],
+  plugins: [uiPlugin],
 });
 
-k.example();
+k.addButton('Start', {
+  pos: k.vec2(100),
+  onClick: () => {
+    k.debug.log('clicked');
+  },
+});

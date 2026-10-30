@@ -1,22 +1,28 @@
 import type { KAPLAYCtx } from 'kaplay';
 
-import { examplePlugin } from '../src/plugin';
+import { uiPlugin } from '../src/plugin';
 
-describe('plugin', () => {
-  const log = vi.fn();
+function makeK(overrides: Record<string, unknown> = {}) {
   const k = {
-    debug: {
-      log,
-    },
+    ...overrides,
   } as unknown as KAPLAYCtx;
+  return { k };
+}
 
-  afterEach(() => {
-    vi.clearAllMocks();
+describe('uiPlugin', () => {
+  it('registers button helpers', () => {
+    const { k } = makeK();
+    const result = uiPlugin(k);
+    expect(result.button).toBeTypeOf('function');
+    expect(result.addButton).toBeTypeOf('function');
+    expect(result.setTheme).toBeTypeOf('function');
+    expect(result.getTheme).toBeTypeOf('function');
   });
 
-  it('logs the plugin name', () => {
-    examplePlugin(k).example();
-
-    expect(log).toHaveBeenCalledExactlyOnceWith('kaplay-plugin-ui');
+  it('getTheme returns current theme', () => {
+    const { k } = makeK();
+    const ui = uiPlugin(k);
+    ui.setTheme({ spacing: 8 });
+    expect(ui.getTheme()).toMatchObject({ spacing: 8 });
   });
 });
