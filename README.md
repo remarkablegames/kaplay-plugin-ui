@@ -53,6 +53,20 @@ const button = k.addButton('Start', {
 });
 ```
 
+Customize the theme:
+
+```ts
+k.setTheme({
+  palette: {
+    primary: k.rgb(80, 160, 255),
+    text: k.rgb(255, 255, 255),
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
+```
+
 To load the plugin using a script:
 
 ```html
