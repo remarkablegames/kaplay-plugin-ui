@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.3...v1.1.0) (2026-10-31)
+
+
+### Features
+
+* **button:** support icon and background image ([91e1876](https://github.com/remarkablegames/kaplay-plugin-ui/commit/91e187650eddb52ef617e13f5db6db4b95f708cd))
+
 ## [1.0.3](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.2...v1.0.3) (2026-10-31)
 
 
