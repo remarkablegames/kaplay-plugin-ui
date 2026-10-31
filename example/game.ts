@@ -1,8 +1,11 @@
+/// <reference types="vite/client" />
+
 import '../global';
 
 import kaplay from 'kaplay';
 
 import { uiPlugin } from '../src/plugin';
+import buttonImage from './button.png';
 
 const k = kaplay({
   plugins: [uiPlugin],
@@ -29,10 +32,23 @@ setTheme({
 console.log('theme:', getTheme());
 
 const themedButton = addButton('Button', {
-  pos: k.vec2(200),
+  pos: k.vec2(150, 150),
   onClick: () => {
     themedButton.label.text = 'Themed Button Clicked';
   },
 });
 
 themedButton.label.text = 'Themed Button';
+
+k.loadSprite('buttonImage', buttonImage);
+
+addButton('Icon Button', {
+  pos: k.vec2(400, 300),
+  color: '#333333',
+  icon: 'buttonImage',
+});
+
+addButton('Image Button', {
+  pos: k.vec2(300, 500),
+  background: 'buttonImage',
+});
