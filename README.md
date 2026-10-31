@@ -53,7 +53,7 @@ Import the plugin's global TypeScript definitions:
 import 'kaplay-plugin-ui/global';
 ```
 
-To load the plugin using a script:
+Load the plugin using a script:
 
 ```html
 <script src="https://unpkg.com/kaplay@latest/dist/kaplay.js"></script>

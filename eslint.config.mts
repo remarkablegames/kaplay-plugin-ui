@@ -13,7 +13,7 @@ export default defineConfig([
   includeIgnoreFile(gitignorePath),
 
   {
-    ignores: ['global.js', 'global.d.ts'],
+    ignores: ['global.js'],
   },
 
   {

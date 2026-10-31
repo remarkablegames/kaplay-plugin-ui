@@ -2,34 +2,36 @@ import type { Color, Vec2 } from 'kaplay';
 
 import { createButton } from './button';
 
-export interface UIPlugin {
-  addButton: (
-    text?: string,
-    opt?: ButtonOpt & {
-      pos?: Vec2;
-      onClick?: () => void;
-      color?: string | Color;
-      hoverColor?: string | Color;
-      pressedColor?: string | Color;
-      textColor?: string | Color;
-    },
-  ) => ReturnType<typeof createButton>;
-
-  getTheme: () => Theme;
-
-  setTheme: (theme: DeepPartial<Theme>) => void;
-}
-
 declare module 'kaplay' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface KAPLAYCtx extends UIPlugin {}
+  interface KAPLAYCtx {
+    addButton: AddButton;
+    getTheme: GetTheme;
+    setTheme: SetTheme;
+  }
 }
+
+export type AddButton = (
+  text?: string,
+  opt?: ButtonOpt & {
+    pos?: Vec2;
+    onClick?: () => void;
+    color?: string | Color;
+    hoverColor?: string | Color;
+    pressedColor?: string | Color;
+    textColor?: string | Color;
+  },
+) => ReturnType<typeof createButton>;
+
+export type GetTheme = () => Theme;
+
+export type SetTheme = (theme: DeepPartial<Theme>) => void;
 
 /** Recursively partial version of a type. */
 export type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
 };
 
+/** Theme config. */
 export interface Theme {
   palette: {
     primary: string | Color;

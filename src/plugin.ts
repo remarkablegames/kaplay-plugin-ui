@@ -1,37 +1,28 @@
-import type { Color, KAPLAYCtx, Vec2 } from 'kaplay';
+import type { KAPLAYCtx } from 'kaplay';
 
 import { createButton } from './button';
 import { resolveTheme } from './theme';
-import type { ButtonOpt, DeepPartial, Theme, UIPlugin } from './types';
-
-export type { ButtonOpt, Theme, UIPlugin };
+import type {
+  AddButton,
+  DeepPartial,
+  GetTheme,
+  SetTheme,
+  Theme,
+} from './types';
 
 /** KAPLAY UI plugin. */
-export function uiPlugin(
-  k: KAPLAYCtx,
-  theme: DeepPartial<Theme> = {},
-): UIPlugin {
+export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
   let userTheme: DeepPartial<Theme> = theme;
   let currentTheme: Theme = resolveTheme(userTheme);
 
-  const getTheme = (): Theme => currentTheme;
+  const getTheme: GetTheme = () => currentTheme;
 
-  const setTheme = (next: DeepPartial<Theme>): void => {
+  const setTheme: SetTheme = (next) => {
     userTheme = { ...userTheme, ...next };
     currentTheme = resolveTheme(userTheme);
   };
 
-  const addButton = (
-    text = '',
-    opt: ButtonOpt & {
-      pos?: Vec2;
-      onClick?: () => void;
-      color?: string | Color;
-      hoverColor?: string | Color;
-      pressedColor?: string | Color;
-      textColor?: string | Color;
-    } = {},
-  ) => {
+  const addButton: AddButton = (text = '', opt = {}) => {
     return createButton(k, currentTheme, text, opt);
   };
 

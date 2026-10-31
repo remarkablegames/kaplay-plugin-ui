@@ -1,4 +1,6 @@
-import type { UIPlugin } from './dist/plugin.cjs';
+import { uiPlugin } from './dist/plugin.cjs';
+
+type Plugin = ReturnType<typeof uiPlugin>;
 
 declare global {
   /**
@@ -18,7 +20,7 @@ declare global {
    *
    * @returns The button object.
    */
-  var addButton: UIPlugin['addButton'];
+  var addButton: Plugin['addButton'];
 
   /**
    * Retrieve the theme.
@@ -30,7 +32,7 @@ declare global {
    *
    * @returns The theme config.
    */
-  var getTheme: UIPlugin['getTheme'];
+  var getTheme: Plugin['getTheme'];
 
   /**
    * Customize the theme.
@@ -50,7 +52,7 @@ declare global {
    * });
    * ```
    */
-  var setTheme: UIPlugin['setTheme'];
+  var setTheme: Plugin['setTheme'];
 }
 
 export {};
