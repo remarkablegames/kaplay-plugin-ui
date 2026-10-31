@@ -88,22 +88,60 @@ k.addButton('Start', {
 
 ### addButton
 
-Add button game object:
+Add text button:
 
 ```ts
 addButton(text, opt);
 ```
 
-Buttons auto-size to their label. Width uses `components.button.paddingX` and `components.button.minWidth`; height uses `components.button.paddingY`. Pass `width` or `height` to override either dimension.
+Buttons auto-size to their content. Width uses `components.button.paddingX` and `components.button.minWidth`; height uses `components.button.paddingY`. Pass `width` or `height` to override either dimension.
+
+Add icon button with text:
+
+```ts
+addButton('Play', {
+  icon: 'play',
+});
+```
+
+Add icon-only button:
+
+```ts
+addButton('', {
+  icon: 'play',
+  hoverIcon: 'play-hover',
+  pressedIcon: 'play-pressed',
+});
+```
+
+Add image button with text:
+
+```ts
+addButton('Play', {
+  background: 'panel',
+});
+```
+
+Add image-only button:
+
+```ts
+addButton('', {
+  background: 'panel',
+  hoverBackground: 'panel-hover',
+  pressedBackground: 'panel-pressed',
+});
+```
+
+Icons use the theme's `spacing` as the gap between the icon and label. Icon-only and background-image buttons have a transparent background. Text is centered over a background image, which stretches to fit the button.
 
 Update button text:
 
 ```ts
-const button = addButton(text);
-button.label.text = 'Hello';
+const button = addButton('Text');
+button.label.text = 'New Text';
 ```
 
-The button resizes automatically when the label text or font changes.
+The button resizes automatically when the label, icon, or background image dimensions change.
 
 ### getTheme
 

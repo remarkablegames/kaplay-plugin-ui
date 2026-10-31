@@ -1,6 +1,8 @@
-import type { Color, Vec2 } from 'kaplay';
+import type { Asset, Color, SpriteData, Vec2 } from 'kaplay';
 
 import { createButton } from './button';
+
+type SpriteSource = string | SpriteData | Asset<SpriteData>;
 
 declare module 'kaplay' {
   interface KAPLAYCtx {
@@ -85,4 +87,16 @@ export interface ButtonOpt {
   radius?: number;
   hoverFill?: string | Color;
   pressedFill?: string | Color;
+  /** Sprite drawn beside the label. */
+  icon?: SpriteSource;
+  /** Sprite drawn beside the label on hover. */
+  hoverIcon?: SpriteSource;
+  /** Sprite drawn beside the label when pressed. */
+  pressedIcon?: SpriteSource;
+  /** Sprite drawn behind the label. */
+  background?: SpriteSource;
+  /** Sprite drawn behind the label on hover. */
+  hoverBackground?: SpriteSource;
+  /** Sprite drawn behind the label when pressed. */
+  pressedBackground?: SpriteSource;
 }
