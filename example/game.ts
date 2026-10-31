@@ -31,7 +31,7 @@ console.log('theme:', getTheme());
 const themedButton = addButton('Button', {
   pos: k.vec2(200),
   onClick: () => {
-    k.debug.log('Themed Button clicked');
+    themedButton.label.text = 'Themed Button Clicked';
   },
 });
 
