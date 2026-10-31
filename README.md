@@ -94,12 +94,16 @@ Add button game object:
 addButton(text, opt);
 ```
 
+Buttons auto-size to their label. Width uses `components.button.paddingX` and `components.button.minWidth`; height uses `components.button.paddingY`. Pass `width` or `height` to override either dimension.
+
 Update button text:
 
 ```ts
 const button = addButton(text);
 button.label.text = 'Hello';
 ```
+
+The button resizes automatically when the label text or font changes.
 
 ### Theme
 

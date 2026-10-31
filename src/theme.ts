@@ -29,8 +29,6 @@ const theme: Theme = {
   spacing: 8,
   components: {
     button: {
-      width: 120,
-      height: 40,
       minWidth: 120,
       paddingX: 12,
       paddingY: 8,
@@ -59,10 +57,6 @@ export function resolveTheme(input?: DeepPartial<Theme>): Theme {
       button: {
         ...theme.components.button,
         ...input?.components?.button,
-        width:
-          input?.components?.button?.width ??
-          input?.components?.button?.minWidth ??
-          theme.components.button.width,
       },
       modal: {
         ...theme.components.modal,

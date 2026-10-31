@@ -57,8 +57,6 @@ export interface Theme {
   spacing: number;
   components: {
     button: {
-      width: number;
-      height: number;
       minWidth: number;
       paddingX: number;
       paddingY: number;

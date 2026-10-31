@@ -16,9 +16,8 @@ export function createButton(
     textColor?: string | Color;
   },
 ) {
-  const width = opt.width ?? theme.components.button.width;
-  const height = opt.height ?? theme.components.button.height;
   const radius = opt.radius ?? theme.shape.borderRadius;
+  const { minWidth, paddingX, paddingY } = theme.components.button;
   const baseColor = toColor(k, opt.color ?? opt.fill ?? theme.palette.primary);
   const hoverColor = toColor(k, opt.hoverColor ?? theme.palette.hover);
   const pressedColor = toColor(k, opt.pressedColor ?? theme.palette.pressed);
@@ -26,6 +25,10 @@ export function createButton(
   const size = opt.size ?? theme.typography.fontSize;
   const font = opt.font ?? theme.typography.fontFamily;
   const pos = opt.pos ?? k.vec2();
+
+  const textComp = k.text(text, { size, font });
+  const width = opt.width ?? Math.max(textComp.width + paddingX * 2, minWidth);
+  const height = opt.height ?? textComp.height + paddingY * 2;
 
   const button = k.add([
     k.rect(width, height, radius > 0 ? { radius } : undefined),
@@ -37,10 +40,30 @@ export function createButton(
   ]);
 
   const label = button.add([
-    k.text(text, { size, font }),
+    textComp,
     k.color(textColor as never),
     k.anchor('center'),
   ]);
+
+  function resize() {
+    const nextWidth =
+      opt.width ?? Math.max(label.width + paddingX * 2, minWidth);
+    const nextHeight = opt.height ?? label.height + paddingY * 2;
+
+    if (button.width !== nextWidth) {
+      button.width = nextWidth;
+    }
+
+    if (button.height !== nextHeight) {
+      button.height = nextHeight;
+    }
+  }
+
+  resize();
+
+  if (opt.width === undefined || opt.height === undefined) {
+    button.onUpdate(resize);
+  }
 
   button.onClick(() => {
     button.color = toColor(k, pressedColor);
