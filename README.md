@@ -8,9 +8,9 @@
 
 🦖 KAPLAY plugin UI (see [API](#api)):
 
-- `addButton`
-- `getTheme`
-- `setTheme`
+- [addButton](#addButton)
+- [getTheme](#getTheme)
+- [setTheme](#setTheme)
 
 ## Prerequisites
 
@@ -86,7 +86,7 @@ k.addButton('Start', {
 
 ## API
 
-### Button
+### addButton
 
 Add button game object:
 
@@ -105,13 +105,15 @@ button.label.text = 'Hello';
 
 The button resizes automatically when the label text or font changes.
 
-### Theme
+### getTheme
 
 Retrieve theme:
 
 ```ts
 getTheme();
 ```
+
+### setTheme
 
 Customize theme:
 
