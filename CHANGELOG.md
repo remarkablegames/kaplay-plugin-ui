@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.1...v1.0.2) (2026-10-31)
+
+
+### Code Refactoring
+
+* **types:** don't export unnecessary types ([c5d3d04](https://github.com/remarkablegames/kaplay-plugin-ui/commit/c5d3d040e6a5f9fb77a603b4f2093fac65dae6b7))
+
 ## [1.0.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.0...v1.0.1) (2026-10-30)
 
 
