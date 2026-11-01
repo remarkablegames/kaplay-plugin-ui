@@ -11,12 +11,17 @@ import type {
   SetTheme,
   Theme,
 } from './types';
-/** KAPLAY UI plugin. */
+
+/**
+ * Kaplay UI plugin.
+ *
+ * @param k - The Kaplay context.
+ * @param theme - The theme config.
+ * @returns The plugin methods.
+ */
 export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
   let userTheme: DeepPartial<Theme> = theme;
   let currentTheme: Theme = resolveTheme(userTheme);
-
-  const modalManager = createModalManager(k);
 
   const getTheme: GetTheme = () => currentTheme;
 
@@ -28,6 +33,8 @@ export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
   const addButton: AddButton = (text = '', opt = {}) => {
     return createButton(k, currentTheme, text, opt);
   };
+
+  const modalManager = createModalManager(k);
 
   const addModal: AddModal = (opt = {}) => {
     return createModal(k, currentTheme, opt, {
