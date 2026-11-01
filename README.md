@@ -9,6 +9,7 @@
 🦖 KAPLAY plugin UI (see [API](#api)):
 
 - [addButton](#addButton)
+- [addModal](#addModal)
 - [getTheme](#getTheme)
 - [setTheme](#setTheme)
 
@@ -150,6 +151,72 @@ addButton('Extra', {
   parent: modal.actions,
 });
 ```
+
+### addModal
+
+Add a modal dialog:
+
+```ts
+addModal(opt);
+```
+
+```ts
+addModal({
+  title: 'Pause',
+  text: 'Take a break?',
+  actions: [{ text: 'Resume' }, { text: 'Quit', onClick: () => go('menu') }],
+});
+```
+
+The modal opens immediately. It blocks the scene by pausing every object outside the modal while it's open, and restores each object's previous paused state when the modal closes. Opening another modal pauses the one below it, so only the topmost modal responds to dismissal.
+
+Modals auto-size to their title, text, and actions. Text wraps at `components.modal.maxWidth` minus horizontal padding. Pass `width` or `height` to override either dimension.
+
+Actions close the modal by default before calling `onClick`. Set `close: false` to keep it open:
+
+```ts
+addModal({
+  text: 'Saved.',
+  actions: [{ text: 'OK', close: false }],
+});
+```
+
+Dismiss with the backdrop or <kbd>Esc</kbd> by default. Disable dismissal with `dismissible: false`:
+
+```ts
+addModal({
+  text: 'Choose an option.',
+  dismissible: false,
+  actions: [{ text: 'Continue' }],
+});
+```
+
+Pass `z` to change the stacking order. The default is `1000`.
+
+Add custom content to the returned `content` container:
+
+```ts
+const modal = addModal({ title: 'Options' });
+
+modal.content.add([text('Custom content', { size: 16 }), pos(0, 40)]);
+```
+
+Attach extra buttons to `modal.actions`:
+
+```ts
+addButton('Help', { parent: modal.actions });
+```
+
+Close a modal by destroying it:
+
+```ts
+modal.destroy();
+```
+
+Use `modal.exists()` to check whether it is still open.
+
+> [!NOTE]
+> Pausing stops updates and object-level input events on scene objects. Global handlers registered with `onUpdate`, `onKeyPress`, or `onMousePress` still run while a modal is open. Guard those handlers if you don't want them to fire behind a modal.
 
 ### getTheme
 

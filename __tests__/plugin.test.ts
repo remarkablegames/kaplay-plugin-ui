@@ -14,6 +14,7 @@ describe('uiPlugin', () => {
     const { k } = makeK();
     const result = uiPlugin(k);
     expect(result.addButton).toBeTypeOf('function');
+    expect(result.addModal).toBeTypeOf('function');
     expect(result.setTheme).toBeTypeOf('function');
     expect(result.getTheme).toBeTypeOf('function');
   });
