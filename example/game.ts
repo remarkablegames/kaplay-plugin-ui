@@ -34,8 +34,8 @@ console.log('theme:', getTheme());
 const customButton = addButton('Button', {
   pos: k.vec2(150, 150),
   onClick: () => {
-    k.debug.log('Custom Button clicked');
-    customButton.destroy();
+    k.debug.log('Disabled Custom Button');
+    customButton.disabled = true;
   },
 });
 
@@ -43,10 +43,13 @@ customButton.label.text = 'Custom Button';
 
 k.loadSprite('buttonImage', buttonImage);
 
-addButton('Icon Button', {
+const iconButton = addButton('Icon Button', {
   pos: k.vec2(400, 275),
   color: '#333333',
   icon: 'buttonImage',
+  onClick: () => {
+    iconButton.destroy();
+  },
 });
 
 addButton('Image Button', {

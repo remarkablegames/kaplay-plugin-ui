@@ -263,7 +263,7 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
 
     pausedScene ??= new Map();
 
-    // v8 ignore next
+    // v8 ignore if
     if (!pausedScene.has(gameObj)) {
       pausedScene.set(gameObj, gameObj.paused);
     }
@@ -273,6 +273,8 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
   }
 
   function openModal(modal: GameObj) {
+    k.setCursor('default');
+
     if (modals.length > 0) {
       setPaused(getLast(modals), true, true);
     }
@@ -310,7 +312,7 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
       cancelPauseOnAdd?.();
       cancelPauseOnAdd = undefined;
 
-      // v8 ignore next
+      // v8 ignore if
       if (pausedScene) {
         for (const [gameObj, paused] of pausedScene) {
           if (gameObj.exists()) {

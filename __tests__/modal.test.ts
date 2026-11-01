@@ -34,6 +34,7 @@ interface MockObj {
   id: number;
   is: (tag: string) => boolean;
   isAncestorOf: (obj: MockObj) => boolean;
+  isHovering: () => boolean;
   keyHandlers: { cb: () => void; key: string }[];
   onDestroyCallbacks: (() => void)[];
   onClick: (cb: () => void) => MockController;
@@ -162,6 +163,7 @@ const createMock = () => {
       id: nextId++,
       is: (tag) => obj.tags.has(tag),
       isAncestorOf: (other) => isAncestorOf(obj, other),
+      isHovering: () => false,
       keyHandlers: [],
       onDestroyCallbacks: [],
       onDestroy: (cb) => {
