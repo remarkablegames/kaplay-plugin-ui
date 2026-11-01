@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.1.0...v1.1.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* **button:** return game object with `Object.assign` instead of spread copy ([c8aaeab](https://github.com/remarkablegames/kaplay-plugin-ui/commit/c8aaeab74f06ce052ccb1c32092d8a48cb66e2c7))
+
 ## [1.1.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.0.3...v1.1.0) (2026-10-31)
 
 
