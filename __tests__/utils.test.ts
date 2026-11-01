@@ -1,6 +1,6 @@
 import type { Color, GameObj, KAPLAYCtx } from 'kaplay';
 
-import { isModal, toColor, uniqueTag } from '../src/utils';
+import { isModal, setPaused, toColor, uniqueTag } from '../src/utils';
 
 describe('isModal', () => {
   it.each([true, false])('returns %s', (expected) => {
@@ -10,6 +10,39 @@ describe('isModal', () => {
       expect.stringContaining('kaplay-plugin-ui:modal:'),
     );
   });
+});
+
+describe('setPaused', () => {
+  it('pauses game object', () => {
+    const gameObj = { paused: false } as GameObj;
+    setPaused(gameObj);
+    expect(gameObj.paused).toBe(true);
+  });
+
+  it('unpauses game object', () => {
+    const gameObj = { paused: true } as GameObj;
+    setPaused(gameObj, false);
+    expect(gameObj.paused).toBe(false);
+  });
+
+  it.each([true, false])(
+    'sets game object and children paused=%s',
+    (isPaused) => {
+      const gameObj = {
+        paused: isPaused,
+        children: [
+          {
+            paused: isPaused,
+            children: [{ paused: isPaused, children: [] as GameObj[] }],
+          },
+        ],
+      } as GameObj;
+      setPaused(gameObj, isPaused, true);
+      expect(gameObj.paused).toBe(isPaused);
+      expect(gameObj.children[0].paused).toBe(isPaused);
+      expect(gameObj.children[0].children[0].paused).toBe(isPaused);
+    },
+  );
 });
 
 describe('toColor', () => {

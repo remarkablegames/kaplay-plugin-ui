@@ -2,7 +2,7 @@ import type { GameObj, KAPLAYCtx } from 'kaplay';
 
 import { createButton } from './button';
 import type { ModalOpt, Theme } from './types';
-import { isModal, toColor, uniqueTag } from './utils';
+import { isModal, setPaused, toColor, uniqueTag } from './utils';
 
 /** Tag applied to modal game objects. */
 export const MODAL_TAG = uniqueTag('modal');
@@ -268,23 +268,13 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
       pausedScene.set(gameObj, gameObj.paused);
     }
 
-    gameObj.paused = true;
+    setPaused(gameObj);
     gameObj.children.forEach(pauseSceneTree);
-  }
-
-  function pauseModalTree(gameObj: GameObj) {
-    gameObj.paused = true;
-    gameObj.children.forEach(pauseModalTree);
-  }
-
-  function resumeModalTree(gameObj: GameObj) {
-    gameObj.paused = false;
-    gameObj.children.forEach(resumeModalTree);
   }
 
   function openModal(modal: GameObj) {
     if (modals.length > 0) {
-      pauseModalTree(modals[modals.length - 1]);
+      setPaused(modals[modals.length - 1], true, true);
     }
 
     modals.push(modal);
@@ -324,14 +314,14 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
       if (pausedScene) {
         for (const [gameObj, paused] of pausedScene) {
           if (gameObj.exists()) {
-            gameObj.paused = paused;
+            setPaused(gameObj, paused);
           }
         }
 
         pausedScene = undefined;
       }
     } else if (wasTopmost) {
-      resumeModalTree(modals[modals.length - 1]);
+      setPaused(modals[modals.length - 1], false, true);
     }
   }
 
