@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.1.1...v1.2.0) (2026-11-01)
+
+
+### Features
+
+* **button:** include option to add to `parent` container object ([953c14c](https://github.com/remarkablegames/kaplay-plugin-ui/commit/953c14c0e9fcaf1f184b9f6093b377ee92086314))
+
 ## [1.1.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.1.0...v1.1.1) (2026-11-01)
 
 
