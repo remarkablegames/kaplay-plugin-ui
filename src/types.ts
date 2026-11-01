@@ -132,4 +132,6 @@ export interface ButtonOpt {
   hoverBackground?: SpriteSource;
   /** Sprite drawn behind the label when pressed. */
   pressedBackground?: SpriteSource;
+  /** Disable the button. Greys it out and ignores click/hover. */
+  disabled?: boolean;
 }

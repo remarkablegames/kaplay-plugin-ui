@@ -420,4 +420,58 @@ describe('addButton', () => {
     const button = createButton(k, resolveTheme(), 'direct', {});
     expect(button).toBeDefined();
   });
+
+  it('greys out and ignores interaction when disabled at creation', () => {
+    const { k, button: mockButton } = createMock();
+    const onClick = vi.fn();
+    const button = uiPlugin(k).addButton('Click', { disabled: true, onClick });
+
+    expect(button.disabled).toBe(true);
+    expect(button.color).toEqual('#6b7280');
+
+    const click = mockButton.onClick.mock.calls[0]?.[0];
+    click?.();
+    expect(onClick).not.toHaveBeenCalled();
+    expect(button.color).toEqual('#6b7280');
+
+    const hover = mockButton.onHover.mock.calls[0]?.[0];
+    hover?.();
+    expect(button.color).toEqual('#6b7280');
+    expect(k.setCursor).toHaveBeenCalledExactlyOnceWith('not-allowed');
+
+    const hoverEnd = mockButton.onHoverEnd.mock.calls[0]?.[0];
+    hoverEnd?.();
+    expect(button.color).toEqual('#6b7280');
+  });
+
+  it('toggles disabled state at runtime', () => {
+    const { k, button: mockButton } = createMock();
+    const onClick = vi.fn();
+    const button = uiPlugin(k).addButton('Click', { onClick });
+
+    expect(button.disabled).toBe(false);
+    expect(button.color).toEqual('#4f8cff');
+
+    button.disabled = true;
+    expect(button.disabled).toBe(true);
+    expect(button.color).toEqual('#6b7280');
+
+    const click = mockButton.onClick.mock.calls[0]?.[0];
+    click?.();
+    expect(onClick).not.toHaveBeenCalled();
+    expect(button.color).toEqual('#6b7280');
+
+    const hover = mockButton.onHover.mock.calls[0]?.[0];
+    hover?.();
+    expect(button.color).toEqual('#6b7280');
+    expect(k.setCursor).toHaveBeenCalledExactlyOnceWith('not-allowed');
+
+    button.disabled = false;
+    expect(button.disabled).toBe(false);
+    expect(button.color).toEqual('#4f8cff');
+
+    click?.();
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(button.color).not.toEqual('#6b7280');
+  });
 });

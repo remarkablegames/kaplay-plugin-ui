@@ -19,6 +19,7 @@ export function createButton(
   const radius = opt.radius ?? theme.shape.borderRadius;
   const { minWidth, paddingX, paddingY } = theme.components.button;
   const baseColor = toColor(k, opt.color ?? opt.fill ?? theme.palette.primary);
+  let disabled = opt.disabled ?? false;
   const hoverColor = toColor(k, opt.hoverColor ?? theme.palette.hover);
   const pressedColor = toColor(k, opt.pressedColor ?? theme.palette.pressed);
   const textColor = toColor(k, opt.textColor ?? theme.palette.text);
@@ -41,7 +42,7 @@ export function createButton(
     k.pos(pos),
     k.area(),
     k.scale(),
-    k.color(baseColor),
+    k.color(disabled ? toColor(k, theme.palette.disabled) : baseColor),
     k.anchor('center'),
   ];
   const button = opt.parent ? opt.parent.add(components) : k.add(components);
@@ -147,6 +148,10 @@ export function createButton(
   }
 
   button.onClick(() => {
+    if (disabled) {
+      return;
+    }
+
     // prevent stray click from click-through
     k.wait(0, () => {
       button.color = toColor(k, pressedColor);
@@ -166,9 +171,15 @@ export function createButton(
   });
 
   button.onHover(() => {
+    if (disabled) {
+      k.setCursor('not-allowed');
+      return;
+    } else {
+      k.setCursor('pointer');
+    }
+
     button.color = toColor(k, hoverColor);
     button.scale = k.vec2(1.05, 1.05);
-    k.setCursor('pointer');
 
     if (icon && opt.hoverIcon) {
       iconState = 'hover';
@@ -182,9 +193,14 @@ export function createButton(
   });
 
   button.onHoverEnd(() => {
+    k.setCursor('default');
+
+    if (disabled) {
+      return;
+    }
+
     button.color = baseColor;
     button.scale = k.vec2(1, 1);
-    k.setCursor('default');
 
     if (icon && opt.icon) {
       iconState = 'base';
@@ -201,9 +217,29 @@ export function createButton(
     }
   });
 
-  return Object.assign(button, {
+  function applyDisabledState() {
+    button.color = disabled ? toColor(k, theme.palette.disabled) : baseColor;
+  }
+
+  applyDisabledState();
+
+  const assignedButton = Object.assign(button, {
     background,
     icon,
     label,
   });
+
+  const definedButton = Object.defineProperty(assignedButton, 'disabled', {
+    get() {
+      return disabled;
+    },
+    set(value: boolean) {
+      disabled = value;
+      applyDisabledState();
+    },
+    enumerable: true,
+    configurable: true,
+  }) as typeof assignedButton & { disabled: boolean };
+
+  return definedButton;
 }
