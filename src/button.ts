@@ -36,14 +36,15 @@ export function createButton(
       : undefined
     : { fill: false };
 
-  const button = k.add([
+  const components = [
     k.rect(0, 0, rectOpt),
     k.pos(pos),
     k.area(),
     k.scale(),
     k.color(baseColor),
     k.anchor('center'),
-  ]);
+  ];
+  const button = opt.parent ? opt.parent.add(components) : k.add(components);
 
   const background = opt.background
     ? button.add([k.sprite(opt.background), k.pos(), k.anchor('center')])
