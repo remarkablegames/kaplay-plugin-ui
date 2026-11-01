@@ -152,7 +152,7 @@ export function createButton(
       return;
     }
 
-    // prevent stray click from click-through
+    // prevent click-through
     k.wait(0, () => {
       button.color = toColor(k, pressedColor);
 
@@ -167,6 +167,13 @@ export function createButton(
       }
 
       opt.onClick?.();
+
+      // v8 ignore if
+      if (disabled) {
+        k.setCursor('not-allowed');
+      } else if (!button.isHovering()) {
+        k.setCursor('default');
+      }
     });
   });
 
@@ -214,6 +221,12 @@ export function createButton(
 
     if (icon || background) {
       layout();
+    }
+  });
+
+  button.onDestroy(() => {
+    if (button.isHovering()) {
+      k.setCursor('default');
     }
   });
 

@@ -32,7 +32,9 @@ const createMock = ({
     onClick: vi.fn((cb?: () => void) => cb),
     onHover: vi.fn((cb?: () => void) => cb),
     onHoverEnd: vi.fn((cb?: () => void) => cb),
+    onDestroy: vi.fn((cb?: () => void) => cb),
     onUpdate: vi.fn((cb?: () => void) => cb),
+    isHovering: vi.fn(() => false),
   };
 
   const rect = vi.fn(() => ({}));
@@ -473,5 +475,38 @@ describe('addButton', () => {
     click?.();
     expect(onClick).toHaveBeenCalledOnce();
     expect(button.color).not.toEqual('#6b7280');
+  });
+
+  it('does not reset cursor on click while hovering', () => {
+    const { k, button: mockButton } = createMock();
+    const onClick = vi.fn();
+    uiPlugin(k).addButton('Click', { onClick });
+
+    mockButton.isHovering.mockReturnValue(true);
+
+    const click = mockButton.onClick.mock.calls[0]?.[0];
+    click?.();
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(k.setCursor).not.toHaveBeenCalled();
+  });
+
+  it('resets cursor to default on destroy when hovering', () => {
+    const { k, button: mockButton } = createMock();
+    uiPlugin(k).addButton('Click');
+
+    mockButton.isHovering.mockReturnValue(true);
+
+    const onDestroy = mockButton.onDestroy.mock.calls[0]?.[0];
+    onDestroy?.();
+    expect(k.setCursor).toHaveBeenLastCalledWith('default');
+  });
+
+  it('does not reset cursor on destroy when not hovering', () => {
+    const { k, button: mockButton } = createMock();
+    uiPlugin(k).addButton('Click');
+
+    const onDestroy = mockButton.onDestroy.mock.calls[0]?.[0];
+    onDestroy?.();
+    expect(k.setCursor).not.toHaveBeenCalled();
   });
 });
