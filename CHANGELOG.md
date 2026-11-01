@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.2.1...v1.3.0) (2026-11-01)
+
+
+### Features
+
+* **modal:** add modal ([954153d](https://github.com/remarkablegames/kaplay-plugin-ui/commit/954153db39b9bb160705153442f248733fd2f8ba))
+
 ## [1.2.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.2.0...v1.2.1) (2026-11-01)
 
 
