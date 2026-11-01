@@ -147,19 +147,22 @@ export function createButton(
   }
 
   button.onClick(() => {
-    button.color = toColor(k, pressedColor);
+    // prevent stray click from click-through
+    k.wait(0, () => {
+      button.color = toColor(k, pressedColor);
 
-    if (icon && opt.pressedIcon) {
-      iconState = 'pressed';
-      icon.sprite = opt.pressedIcon as string;
-    }
+      if (icon && opt.pressedIcon) {
+        iconState = 'pressed';
+        icon.sprite = opt.pressedIcon as string;
+      }
 
-    if (background && opt.pressedBackground) {
-      backgroundState = 'pressed';
-      background.sprite = opt.pressedBackground as string;
-    }
+      if (background && opt.pressedBackground) {
+        backgroundState = 'pressed';
+        background.sprite = opt.pressedBackground as string;
+      }
 
-    opt.onClick?.();
+      opt.onClick?.();
+    });
   });
 
   button.onHover(() => {

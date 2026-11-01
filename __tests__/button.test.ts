@@ -40,13 +40,13 @@ const createMock = ({
   const k = {
     add: vi.fn(() => button),
     anchor: vi.fn(() => ({})),
-    color: vi.fn((value: unknown) => value),
     area: vi.fn(() => ({})),
-    rgb: vi.fn((hex: string) => hex),
-    vec2: vi.fn((x: number, y: number) => ({ x, y })),
-    rect,
+    color: vi.fn((value: unknown) => value),
     pos: vi.fn((value?: unknown) => value),
+    rect,
+    rgb: vi.fn((hex: string) => hex),
     scale: vi.fn(() => ({})),
+    setCursor: vi.fn(),
     sprite: vi.fn((source: string) => {
       const sprite = {
         width: spriteWidth,
@@ -58,7 +58,10 @@ const createMock = ({
       return sprite;
     }),
     text: vi.fn(() => text),
-    setCursor: vi.fn(),
+    vec2: vi.fn((x: number, y: number) => ({ x, y })),
+    wait: vi.fn((time: number, action: () => void) => {
+      action();
+    }),
   } as unknown as KAPLAYCtx;
 
   return { button, k, rect, sprites, text };
