@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.3.0...v1.4.0) (2026-11-01)
+
+
+### Features
+
+* **button:** add togglable `disabled` option ([adde5bf](https://github.com/remarkablegames/kaplay-plugin-ui/commit/adde5bf7226f2d9d8565e37855a79547c61e926a))
+
+
+### Bug Fixes
+
+* set the correct cursor for button and modal ([e6585e7](https://github.com/remarkablegames/kaplay-plugin-ui/commit/e6585e76138f810638599b0136422e73b95097fb))
+
 ## [1.3.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.2.1...v1.3.0) (2026-11-01)
 
 
