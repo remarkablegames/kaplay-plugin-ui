@@ -37,6 +37,11 @@ const theme: Theme = {
     modal: {
       backdropOpacity: 0.5,
       borderRadius: 8,
+      gap: 16,
+      maxWidth: 480,
+      minWidth: 280,
+      paddingX: 24,
+      paddingY: 20,
     },
     tooltip: {
       background: '#111827',

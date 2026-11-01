@@ -23,6 +23,29 @@ declare global {
   var addButton: Plugin['addButton'];
 
   /**
+   * Add a modal dialog.
+   *
+   * @param opt - The modal options.
+   *
+   * @example
+   * ```js
+   * const modal = addModal({
+   *   title: 'Pause',
+   *   text: 'Take a break?',
+   *   actions: [
+   *     { text: 'Resume' },
+   *     { text: 'Quit', onClick: () => go('menu') },
+   *   ],
+   * });
+   *
+   * modal.destroy();
+   * ```
+   *
+   * @returns The modal object with `content` and `actions`.
+   */
+  var addModal: Plugin['addModal'];
+
+  /**
    * Retrieve the theme.
    *
    * @example

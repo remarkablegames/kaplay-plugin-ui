@@ -11,11 +11,10 @@ const k = kaplay({
   plugins: [uiPlugin],
 });
 
-const button = k.addButton('Button', {
+k.addButton('Button', {
   pos: k.vec2(100),
   onClick: () => {
     k.debug.log('Button clicked');
-    button.destroy();
   },
 });
 
@@ -34,6 +33,10 @@ console.log('theme:', getTheme());
 
 const customButton = addButton('Button', {
   pos: k.vec2(150, 150),
+  onClick: () => {
+    k.debug.log('Custom Button clicked');
+    customButton.destroy();
+  },
 });
 
 customButton.label.text = 'Custom Button';
@@ -41,12 +44,33 @@ customButton.label.text = 'Custom Button';
 k.loadSprite('buttonImage', buttonImage);
 
 addButton('Icon Button', {
-  pos: k.vec2(400, 300),
+  pos: k.vec2(400, 275),
   color: '#333333',
   icon: 'buttonImage',
 });
 
 addButton('Image Button', {
-  pos: k.vec2(300, 500),
+  pos: k.vec2(300, 450),
   background: 'buttonImage',
+});
+
+addButton('Modal', {
+  pos: k.vec2(100, 550),
+  onClick: () => {
+    k.debug.log('Modal clicked');
+
+    addModal({
+      title: 'Pause',
+      text: 'Take a break?',
+      actions: [
+        { text: 'Resume' },
+        {
+          text: 'Quit',
+          onClick: () => {
+            k.debug.log('Quit clicked');
+          },
+        },
+      ],
+    });
+  },
 });
