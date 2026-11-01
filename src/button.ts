@@ -197,10 +197,9 @@ export function createButton(
     }
   });
 
-  return {
-    ...button,
+  return Object.assign(button, {
     background,
     icon,
     label,
-  };
+  });
 }

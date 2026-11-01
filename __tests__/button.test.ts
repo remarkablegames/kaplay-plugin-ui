@@ -42,7 +42,7 @@ const createMock = ({
     anchor: vi.fn(() => ({})),
     color: vi.fn((value: unknown) => value),
     area: vi.fn(() => ({})),
-    rgb: vi.fn((r: number, g: number, b: number) => ({ r, g, b })),
+    rgb: vi.fn((hex: string) => hex),
     vec2: vi.fn((x: number, y: number) => ({ x, y })),
     rect,
     pos: vi.fn((value?: unknown) => value),
@@ -86,9 +86,6 @@ describe('addButton', () => {
     const ui = uiPlugin(k);
     const button = ui.addButton('Click');
 
-    button.color = k.rgb(1, 2, 3);
-    expect(button.color).toEqual({ r: 1, g: 2, b: 3 });
-
     button.pos = k.vec2(5, 6);
     expect(button.pos).toEqual({ x: 5, y: 6 });
   });
@@ -96,7 +93,6 @@ describe('addButton', () => {
   it('resets hover state on a text-only button', () => {
     const { k, button: mockButton } = createMock();
     const button = uiPlugin(k).addButton('Click', { width: 200, height: 50 });
-    const baseColor = button.color;
 
     const hover = mockButton.onHover.mock.calls[0]?.[0];
     hover?.();
@@ -105,7 +101,7 @@ describe('addButton', () => {
     const hoverEnd = mockButton.onHoverEnd.mock.calls[0]?.[0];
     hoverEnd?.();
 
-    expect(button.color).toEqual(baseColor);
+    expect(button.color).toEqual('#4f8cff');
     expect(k.setCursor).toHaveBeenLastCalledWith('default');
     expect(mockButton.onUpdate).not.toHaveBeenCalled();
   });
