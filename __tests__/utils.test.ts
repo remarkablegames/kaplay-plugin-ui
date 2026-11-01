@@ -1,6 +1,14 @@
 import type { Color, GameObj, KAPLAYCtx } from 'kaplay';
 
-import { isModal, setPaused, toColor, uniqueTag } from '../src/utils';
+import { getLast, isModal, setPaused, toColor, uniqueTag } from '../src/utils';
+
+describe('getLast', () => {
+  it('returns the last item in an array', () => {
+    expect(getLast([])).toBeUndefined();
+    expect(getLast([0, 1, 2])).toBe(2);
+    expect(getLast(['first', 'middle', 'last'])).toBe('last');
+  });
+});
 
 describe('isModal', () => {
   it.each([true, false])('returns %s', (expected) => {

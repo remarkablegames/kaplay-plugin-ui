@@ -3,6 +3,16 @@ import type { Color, GameObj, KAPLAYCtx } from 'kaplay';
 import { MODAL_TAG } from './modal';
 
 /**
+ * Get the last item in an array.
+ *
+ * @param items - The items.
+ * @returns The last item.
+ */
+export function getLast<T>(items: T[]): T {
+  return items[items.length - 1];
+}
+
+/**
  * Check if the game object is a modal.
  *
  * @param gameObj - The game object.

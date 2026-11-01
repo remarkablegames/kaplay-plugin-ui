@@ -2,7 +2,7 @@ import type { GameObj, KAPLAYCtx } from 'kaplay';
 
 import { createButton } from './button';
 import type { ModalOpt, Theme } from './types';
-import { isModal, setPaused, toColor, uniqueTag } from './utils';
+import { getLast, isModal, setPaused, toColor, uniqueTag } from './utils';
 
 /** Tag applied to modal game objects. */
 export const MODAL_TAG = uniqueTag('modal');
@@ -274,7 +274,7 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
 
   function openModal(modal: GameObj) {
     if (modals.length > 0) {
-      setPaused(modals[modals.length - 1], true, true);
+      setPaused(getLast(modals), true, true);
     }
 
     modals.push(modal);
@@ -321,11 +321,11 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
         pausedScene = undefined;
       }
     } else if (wasTopmost) {
-      setPaused(modals[modals.length - 1], false, true);
+      setPaused(getLast(modals), false, true);
     }
   }
 
-  const isTopmost = (modal: GameObj) => modals[modals.length - 1] === modal;
+  const isTopmost = (modal: GameObj) => getLast(modals) === modal;
 
   return { openModal, closeModal, isTopmost, isInsideModal };
 }
