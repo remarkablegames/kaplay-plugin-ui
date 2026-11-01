@@ -263,11 +263,10 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
 
     pausedScene ??= new Map();
 
-    // v8 ignore start: the tree DFS visits each node exactly once, so an already-paused node is never re-paused through the public API
+    // v8 ignore next
     if (!pausedScene.has(gameObj)) {
       pausedScene.set(gameObj, gameObj.paused);
     }
-    // v8 ignore stop
 
     gameObj.paused = true;
     gameObj.children.forEach(pauseSceneTree);
@@ -317,11 +316,11 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
 
     modals.splice(index, 1);
 
-    if (modals.length === 0) {
+    if (!modals.length) {
       cancelPauseOnAdd?.();
       cancelPauseOnAdd = undefined;
 
-      // v8 ignore start: pausedScene is always set when the first modal opens, so it's defined whenever the last modal closes
+      // v8 ignore next
       if (pausedScene) {
         for (const [gameObj, paused] of pausedScene) {
           if (gameObj.exists()) {
@@ -331,7 +330,6 @@ export function createModalManager(k: KAPLAYCtx): ModalManager {
 
         pausedScene = undefined;
       }
-      // v8 ignore stop
     } else if (wasTopmost) {
       resumeModalTree(modals[modals.length - 1]);
     }

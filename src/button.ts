@@ -27,7 +27,7 @@ export function createButton(
   const pos = opt.pos ?? k.vec2();
 
   const textComp = k.text(text, { size, font });
-  const isIconOnly = opt.icon !== undefined && text.length === 0;
+  const isIconOnly = opt.icon !== undefined && !text.length;
   const hasBackground = opt.background !== undefined;
   const showFill = !hasBackground && !isIconOnly;
   const rectOpt = showFill
