@@ -11,10 +11,11 @@ const k = kaplay({
   plugins: [uiPlugin],
 });
 
-k.addButton('Button', {
+const button = k.addButton('Button', {
   pos: k.vec2(100),
   onClick: () => {
     k.debug.log('Button clicked');
+    button.destroy();
   },
 });
 
@@ -31,14 +32,11 @@ setTheme({
 // eslint-disable-next-line no-console
 console.log('theme:', getTheme());
 
-const themedButton = addButton('Button', {
+const customButton = addButton('Button', {
   pos: k.vec2(150, 150),
-  onClick: () => {
-    themedButton.label.text = 'Themed Button Clicked';
-  },
 });
 
-themedButton.label.text = 'Themed Button';
+customButton.label.text = 'Custom Button';
 
 k.loadSprite('buttonImage', buttonImage);
 
