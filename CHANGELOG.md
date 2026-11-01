@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.2.0...v1.2.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* **button:** add 0-second wait to prevent `onClick` click-through ([4a54518](https://github.com/remarkablegames/kaplay-plugin-ui/commit/4a54518d85a85d29b8f70d6e824d70b13ef45c65))
+
 ## [1.2.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.1.1...v1.2.0) (2026-11-01)
 
 
