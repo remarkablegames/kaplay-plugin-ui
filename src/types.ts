@@ -1,4 +1,4 @@
-import type { Asset, Color, SpriteData, Vec2 } from 'kaplay';
+import type { Asset, Color, GameObj, SpriteData, Vec2 } from 'kaplay';
 
 import { createButton } from './button';
 
@@ -80,6 +80,8 @@ export interface Theme {
 export interface ButtonOpt {
   width?: number;
   height?: number;
+  /** Parent object to add the button to. Defaults to the scene root. */
+  parent?: GameObj;
   size?: number;
   font?: string;
   fill?: string | Color;

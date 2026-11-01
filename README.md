@@ -88,7 +88,7 @@ k.addButton('Start', {
 
 ### addButton
 
-Add text button:
+Add a text button:
 
 ```ts
 addButton(text, opt);
@@ -96,7 +96,7 @@ addButton(text, opt);
 
 Buttons auto-size to their content. Width uses `components.button.paddingX` and `components.button.minWidth`; height uses `components.button.paddingY`. Pass `width` or `height` to override either dimension.
 
-Add icon button with text:
+Add an icon button with text:
 
 ```ts
 addButton('Play', {
@@ -104,7 +104,7 @@ addButton('Play', {
 });
 ```
 
-Add icon-only button:
+Add an icon-only button:
 
 ```ts
 addButton('', {
@@ -114,7 +114,7 @@ addButton('', {
 });
 ```
 
-Add image button with text:
+Add an image button with text:
 
 ```ts
 addButton('Play', {
@@ -122,7 +122,7 @@ addButton('Play', {
 });
 ```
 
-Add image-only button:
+Add an image-only button:
 
 ```ts
 addButton('', {
@@ -134,7 +134,7 @@ addButton('', {
 
 Icons use the theme's `spacing` as the gap between the icon and label. Icon-only and background-image buttons have a transparent background. Text is centered over a background image, which stretches to fit the button.
 
-Update button text:
+Update the button text:
 
 ```ts
 const button = addButton('Text');
@@ -142,6 +142,14 @@ button.label.text = 'New Text';
 ```
 
 The button resizes automatically when the label, icon, or background image dimensions change.
+
+Add a button to a container with `parent`:
+
+```ts
+addButton('Extra', {
+  parent: modal.actions,
+});
+```
 
 ### getTheme
 

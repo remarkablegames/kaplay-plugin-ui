@@ -1,4 +1,4 @@
-import type { KAPLAYCtx } from 'kaplay';
+import type { GameObj, KAPLAYCtx } from 'kaplay';
 
 import { createButton } from '../src/button';
 import { uiPlugin } from '../src/plugin';
@@ -397,6 +397,19 @@ describe('addButton', () => {
     layout?.();
 
     expect(button).toMatchObject({ width: 182, height: 36 });
+  });
+
+  it('adds the button to a parent', () => {
+    const { k, button } = createMock();
+    const parent = {
+      add: vi.fn(() => button),
+    } as unknown as GameObj;
+
+    const result = uiPlugin(k).addButton('Click', { parent });
+
+    expect(parent.add).toHaveBeenCalledOnce();
+    expect(k.add).not.toHaveBeenCalled();
+    expect(result).toBe(button);
   });
 
   it('creates button with factory', () => {
