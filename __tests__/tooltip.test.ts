@@ -3,13 +3,7 @@ import type { GameObj, KAPLAYCtx, TimerController } from 'kaplay';
 import { uiPlugin } from '../src/plugin';
 import { resolveTheme } from '../src/theme';
 import { createTooltip, TOOLTIP_TAG } from '../src/tooltip';
-import {
-  asMock,
-  type Comp,
-  createMockTree,
-  makeK,
-  type MockObj,
-} from './mocks';
+import { asMock, type Comp, makeK, makeTree, type MockObj } from './mocks';
 
 const createMock = () => {
   const timers: {
@@ -21,7 +15,7 @@ const createMock = () => {
   const mousePressHandlers: (() => void)[] = [];
   const isTouchscreen = vi.fn(() => false);
 
-  const tree = createMockTree();
+  const tree = makeTree();
   const { root } = tree;
 
   function addController(list: (() => void)[], cb: () => void) {

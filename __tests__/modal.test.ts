@@ -2,12 +2,12 @@ import type { GameObj, KAPLAYCtx } from 'kaplay';
 
 import { createModalManager, MODAL_TAG } from '../src/modal';
 import { uiPlugin } from '../src/plugin';
-import { asMock, createMockTree, makeK } from './mocks';
+import { asMock, makeK, makeTree } from './mocks';
 
 const createMock = () => {
   const screen = { height: 600, width: 800 };
   const mouse = { x: 0, y: 0 };
-  const tree = createMockTree();
+  const tree = makeTree();
   const { root, update, walk, worldPos, isActive } = tree;
 
   function click(point: { x: number; y: number }) {

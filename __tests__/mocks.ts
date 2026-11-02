@@ -70,7 +70,7 @@ export interface MockObj {
 
 export const asMock = (obj: unknown) => obj as MockObj;
 
-export function createMockTree() {
+export function makeTree() {
   let nextId = 0;
   const root = makeObj([], null);
   const addCallbacks: ((obj: MockObj) => void)[] = [];
@@ -371,7 +371,7 @@ export function createMockTree() {
 
 export function makeK(
   overrides: Record<string, unknown> = {},
-  tree: ReturnType<typeof createMockTree> = createMockTree(),
+  tree = makeTree(),
 ) {
   const { attach, onAdd, root } = tree;
   const k = {
