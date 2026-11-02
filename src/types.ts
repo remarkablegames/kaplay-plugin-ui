@@ -2,6 +2,7 @@ import type { Asset, Color, GameObj, SpriteData, Vec2 } from 'kaplay';
 
 import type { createButton } from './button';
 import type { createModal } from './modal';
+import type { createTooltip } from './tooltip';
 
 type SpriteSource = string | SpriteData | Asset<SpriteData>;
 
@@ -9,6 +10,7 @@ declare module 'kaplay' {
   interface KAPLAYCtx {
     addButton: AddButton;
     addModal: AddModal;
+    addTooltip: AddTooltip;
     getTheme: GetTheme;
     setTheme: SetTheme;
   }
@@ -27,6 +29,11 @@ export type AddButton = (
 ) => ReturnType<typeof createButton>;
 
 export type AddModal = (opt?: ModalOpt) => ReturnType<typeof createModal>;
+
+export type AddTooltip = (
+  text: string,
+  opt: TooltipOpt,
+) => ReturnType<typeof createTooltip>;
 
 export type GetTheme = () => Theme;
 
@@ -105,6 +112,32 @@ export interface ModalAction {
   onClick?: () => void;
   /** Close the modal after the action. Defaults to true. */
   close?: boolean;
+}
+
+/** Where the tooltip appears relative to its target. */
+export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
+
+/** How the tooltip opens. */
+export type TooltipTrigger = 'auto' | 'hover' | 'click';
+
+/** Tooltip options. */
+export interface TooltipOpt {
+  /** Game object that triggers the tooltip. It must have an `area()`. */
+  target: GameObj;
+  /** Where the tooltip appears relative to the target. Defaults to `'top'`. */
+  placement?: TooltipPlacement;
+  /** How the tooltip opens. Defaults to `'auto'`. */
+  trigger?: TooltipTrigger;
+  /** Draw an arrow pointing at the target. Defaults to true. */
+  arrow?: boolean;
+  /** Delay in milliseconds before showing on hover. */
+  delay?: number;
+  /** Z index of the tooltip. Defaults to 900. */
+  z?: number;
+  /** Background color. */
+  background?: string | Color;
+  /** Text color. */
+  textColor?: string | Color;
 }
 
 /** Button options. */

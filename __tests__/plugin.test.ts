@@ -15,6 +15,7 @@ describe('uiPlugin', () => {
     const result = uiPlugin(k);
     expect(result.addButton).toBeTypeOf('function');
     expect(result.addModal).toBeTypeOf('function');
+    expect(result.addTooltip).toBeTypeOf('function');
     expect(result.setTheme).toBeTypeOf('function');
     expect(result.getTheme).toBeTypeOf('function');
   });

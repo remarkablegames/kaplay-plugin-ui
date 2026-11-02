@@ -3,9 +3,11 @@ import type { KAPLAYCtx } from 'kaplay';
 import { createButton } from './button';
 import { createModal, createModalManager } from './modal';
 import { resolveTheme } from './theme';
+import { createTooltip } from './tooltip';
 import type {
   AddButton,
   AddModal,
+  AddTooltip,
   DeepPartial,
   GetTheme,
   SetTheme,
@@ -44,9 +46,14 @@ export function uiPlugin(k: KAPLAYCtx, theme: DeepPartial<Theme> = {}) {
     });
   };
 
+  const addTooltip: AddTooltip = (text, opt) => {
+    return createTooltip(k, currentTheme, text, opt);
+  };
+
   return {
     addButton,
     addModal,
+    addTooltip,
     setTheme,
     getTheme,
   };
