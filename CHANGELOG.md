@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.4.0...v1.5.0) (2026-11-02)
+
+
+### Features
+
+* **tooltip:** add tooltip ([a54f4c0](https://github.com/remarkablegames/kaplay-plugin-ui/commit/a54f4c0469ee92dec705862da59db8e39bb0b3c2))
+
 ## [1.4.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.3.0...v1.4.0) (2026-11-01)
 
 
