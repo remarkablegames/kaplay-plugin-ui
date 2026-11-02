@@ -3,61 +3,7 @@ import type { GameObj, KAPLAYCtx, TimerController } from 'kaplay';
 import { uiPlugin } from '../src/plugin';
 import { resolveTheme } from '../src/theme';
 import { createTooltip, TOOLTIP_TAG } from '../src/tooltip';
-
-interface MockController {
-  cancel: () => void;
-}
-
-type Comp =
-  | string
-  | { kind: 'anchor'; value: string }
-  | { kind: 'color'; value: unknown }
-  | { kind: 'fixed' }
-  | { kind: 'polygon'; pts: { x: number; y: number }[] }
-  | { kind: 'pos'; value: { x: number; y: number } }
-  | { kind: 'rect'; height: number; opts?: { radius?: number }; width: number }
-  | {
-      height: number;
-      kind: 'text';
-      opts?: { size?: number };
-      text: string;
-      width: number;
-    }
-  | { kind: 'z'; value: number };
-
-interface MockObj {
-  add: (comps: Comp[]) => MockObj;
-  anchor?: string;
-  children: MockObj[];
-  clickHandlers: (() => void)[];
-  color?: unknown;
-  destroy: () => void;
-  exists: () => boolean;
-  fixed?: boolean;
-  height: number;
-  hidden: boolean;
-  hoverEndHandlers: (() => void)[];
-  hoverHandlers: (() => void)[];
-  hovering: boolean;
-  is: (tag: string) => boolean;
-  isHovering: () => boolean;
-  onClick: (cb: () => void) => MockController;
-  onDestroy: (cb: () => void) => MockController;
-  onDestroyCallbacks: (() => void)[];
-  onHover: (cb: () => void) => MockController;
-  onHoverEnd: (cb: () => void) => MockController;
-  onUpdate: (cb: () => void) => MockController;
-  onUpdateCallbacks: (() => void)[];
-  parent: MockObj | null;
-  pos: { x: number; y: number };
-  pts?: { x: number; y: number }[];
-  rectOpts?: { radius?: number };
-  tags: Set<string>;
-  text?: string;
-  textOpts?: { size?: number };
-  width: number;
-  z?: number;
-}
+import { asMock, type Comp, createMockTree, type MockObj } from './mocks';
 
 const createMock = () => {
   const timers: {
@@ -69,7 +15,9 @@ const createMock = () => {
   const mousePressHandlers: (() => void)[] = [];
   const isTouchscreen = vi.fn(() => false);
 
-  function addController(list: (() => void)[], cb: () => void): MockController {
+  const { attach, root } = createMockTree();
+
+  function addController(list: (() => void)[], cb: () => void) {
     list.push(cb);
 
     return {
@@ -81,123 +29,6 @@ const createMock = () => {
         }
       },
     };
-  }
-
-  const root = makeObj([], null);
-
-  function exists(obj: MockObj) {
-    let current: MockObj | null = obj;
-
-    while (current) {
-      if (current === root) {
-        return true;
-      }
-
-      current = current.parent;
-    }
-
-    return false;
-  }
-
-  function triggerDestroy(obj: MockObj) {
-    [...obj.onDestroyCallbacks].forEach((cb) => {
-      cb();
-    });
-    obj.children.forEach(triggerDestroy);
-  }
-
-  function destroy(obj: MockObj) {
-    const parent = obj.parent;
-
-    if (!parent) {
-      return;
-    }
-
-    const index = parent.children.indexOf(obj);
-
-    if (index !== -1) {
-      parent.children.splice(index, 1);
-    }
-
-    obj.parent = null;
-    triggerDestroy(obj);
-  }
-
-  function makeObj(comps: Comp[], parent: MockObj | null): MockObj {
-    const obj: MockObj = {
-      add: (next) => attach(obj, next),
-      children: [],
-      clickHandlers: [],
-      destroy: () => {
-        destroy(obj);
-      },
-      exists: () => exists(obj),
-      height: 0,
-      hidden: false,
-      hoverEndHandlers: [],
-      hoverHandlers: [],
-      hovering: false,
-      is: (tag) => obj.tags.has(tag),
-      isHovering: () => obj.hovering,
-      onClick: (cb) => addController(obj.clickHandlers, cb),
-      onDestroy: (cb) => addController(obj.onDestroyCallbacks, cb),
-      onDestroyCallbacks: [],
-      onHover: (cb) => addController(obj.hoverHandlers, cb),
-      onHoverEnd: (cb) => addController(obj.hoverEndHandlers, cb),
-      onUpdate: (cb) => addController(obj.onUpdateCallbacks, cb),
-      onUpdateCallbacks: [],
-      parent,
-      pos: { x: 0, y: 0 },
-      tags: new Set<string>(),
-      width: 0,
-    };
-
-    for (const comp of comps) {
-      if (typeof comp === 'string') {
-        obj.tags.add(comp);
-        continue;
-      }
-
-      switch (comp.kind) {
-        case 'anchor':
-          obj.anchor = comp.value;
-          break;
-        case 'color':
-          obj.color = comp.value;
-          break;
-        case 'fixed':
-          obj.fixed = true;
-          break;
-        case 'polygon':
-          obj.pts = comp.pts;
-          break;
-        case 'pos':
-          obj.pos = comp.value;
-          break;
-        case 'rect':
-          obj.width = comp.width;
-          obj.height = comp.height;
-          obj.rectOpts = comp.opts;
-          break;
-        case 'text':
-          obj.width = comp.width;
-          obj.height = comp.height;
-          obj.text = comp.text;
-          obj.textOpts = comp.opts;
-          break;
-        case 'z':
-          obj.z = comp.value;
-          break;
-      }
-    }
-
-    return obj;
-  }
-
-  function attach(parent: MockObj, comps: Comp[]) {
-    const obj = makeObj(comps, parent);
-    parent.children.push(obj);
-    return obj;
   }
 
   const add = vi.fn((comps: Comp[]) => attach(root, comps));
@@ -248,8 +79,6 @@ const createMock = () => {
 
   return { add, isTouchscreen, k, mousePressHandlers, root, timers };
 };
-
-const asMock = (obj: unknown) => obj as MockObj;
 
 const createTarget = (k: KAPLAYCtx) => {
   const target = asMock(k.add([]));
