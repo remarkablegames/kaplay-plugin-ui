@@ -2,13 +2,13 @@ import type { GameObj, KAPLAYCtx } from 'kaplay';
 
 import { createModalManager, MODAL_TAG } from '../src/modal';
 import { uiPlugin } from '../src/plugin';
-import { asMock, type Comp, createMockTree } from './mocks';
+import { asMock, createMockTree, makeK } from './mocks';
 
 const createMock = () => {
   const screen = { height: 600, width: 800 };
   const mouse = { x: 0, y: 0 };
-  const { attach, onAdd, root, update, walk, worldPos, isActive } =
-    createMockTree();
+  const tree = createMockTree();
+  const { root, update, walk, worldPos, isActive } = tree;
 
   function click(point: { x: number; y: number }) {
     mouse.x = point.x;
@@ -39,54 +39,31 @@ const createMock = () => {
     });
   };
 
-  const k = {
-    add: (comps: Comp[]) => attach(root, comps),
-    anchor: (value: string) => ({ kind: 'anchor', value }),
-    area: () => ({ kind: 'area' }),
-    center: () => ({ x: screen.width / 2, y: screen.height / 2 }),
-    color: (value: unknown) => ({ kind: 'color', value }),
-    fixed: () => ({ kind: 'fixed' }),
-    getTreeRoot: () => root,
-    height: () => screen.height,
-    mousePos: () => mouse,
-    onAdd,
-    opacity: (value: number) => ({ kind: 'opacity', value }),
-    pos: (value: { x: number; y: number } = { x: 0, y: 0 }) => ({
-      kind: 'pos',
-      value,
-    }),
-    rect: (
-      width: number,
-      height: number,
-      opts?: { fill?: boolean; radius?: number },
-    ) => ({ height, kind: 'rect', opts, width }),
-    rgb: (r: number, g: number, b: number) => ({ b, g, r }),
-    scale: () => ({ kind: 'scale' }),
-    setCursor: vi.fn(),
-    sprite: () => ({ kind: 'sprite' }),
-    text: (value: string, opts: { size?: number; width?: number } = {}) => {
-      const naturalWidth = value.length * 10;
-      const size = opts.size ?? 16;
-      const width = opts.width ?? naturalWidth;
-      const height = opts.width
-        ? Math.ceil(naturalWidth / opts.width) * size
-        : size;
+  const { k } = makeK(
+    {
+      center: () => ({ x: screen.width / 2, y: screen.height / 2 }),
+      height: () => screen.height,
+      mousePos: () => mouse,
+      text: (value: string, opts: { size?: number; width?: number } = {}) => {
+        const naturalWidth = value.length * 10;
+        const size = opts.size ?? 16;
+        const width = opts.width ?? naturalWidth;
+        const height = opts.width
+          ? Math.ceil(naturalWidth / opts.width) * size
+          : size;
 
-      return {
-        height,
-        kind: 'text',
-        opts,
-        text: value,
-        width,
-      };
+        return {
+          height,
+          kind: 'text',
+          opts,
+          text: value,
+          width,
+        };
+      },
+      width: () => screen.width,
     },
-    vec2: (x = 0, y = 0) => ({ x, y }),
-    wait: vi.fn((time: number, action: () => void) => {
-      action();
-    }),
-    width: () => screen.width,
-    z: (value: number) => ({ kind: 'z', value }),
-  } as unknown as KAPLAYCtx;
+    tree,
+  );
 
   return {
     click,

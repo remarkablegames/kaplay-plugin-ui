@@ -70,13 +70,6 @@ export interface MockObj {
 
 export const asMock = (obj: unknown) => obj as MockObj;
 
-export function makeK(overrides: Record<string, unknown> = {}) {
-  const k = {
-    ...overrides,
-  } as unknown as KAPLAYCtx;
-  return { k };
-}
-
 export function createMockTree() {
   let nextId = 0;
   const root = makeObj([], null);
@@ -374,4 +367,54 @@ export function createMockTree() {
     walk,
     worldPos,
   };
+}
+
+export function makeK(
+  overrides: Record<string, unknown> = {},
+  tree: ReturnType<typeof createMockTree> = createMockTree(),
+) {
+  const { attach, onAdd, root } = tree;
+  const k = {
+    add: (comps: Comp[]) => attach(root, comps),
+    anchor: (value: string) => ({ kind: 'anchor', value }),
+    area: () => ({ kind: 'area' }),
+    center: () => ({ x: 400, y: 300 }),
+    color: (value: unknown) => ({ kind: 'color', value }),
+    fixed: () => ({ kind: 'fixed' }),
+    getTreeRoot: () => root,
+    height: () => 600,
+    mousePos: () => ({ x: 0, y: 0 }),
+    onAdd,
+    opacity: (value: number) => ({ kind: 'opacity', value }),
+    polygon: (pts: { x: number; y: number }[]) => ({ kind: 'polygon', pts }),
+    pos: (value: { x: number; y: number } = { x: 0, y: 0 }) => ({
+      kind: 'pos',
+      value,
+    }),
+    rect: (
+      width: number,
+      height: number,
+      opts?: { fill?: boolean; radius?: number },
+    ) => ({ height, kind: 'rect', opts, width }),
+    rgb: (r: number, g: number, b: number) => ({ b, g, r }),
+    scale: () => ({ kind: 'scale' }),
+    setCursor: vi.fn(),
+    sprite: () => ({ kind: 'sprite' }),
+    text: (value: string, opts: { size?: number } = {}) => ({
+      height: opts.size ?? 16,
+      kind: 'text',
+      opts,
+      text: value,
+      width: value.length * 10,
+    }),
+    vec2: (x = 0, y = 0) => ({ x, y }),
+    wait: vi.fn((time: number, action: () => void) => {
+      action();
+    }),
+    width: () => 800,
+    z: (value: number) => ({ kind: 'z', value }),
+    ...overrides,
+  } as unknown as KAPLAYCtx;
+
+  return { k, tree };
 }

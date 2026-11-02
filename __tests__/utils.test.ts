@@ -1,6 +1,7 @@
-import type { Color, GameObj, KAPLAYCtx } from 'kaplay';
+import type { Color, GameObj } from 'kaplay';
 
 import { getLast, isModal, setPaused, toColor, uniqueTag } from '../src/utils';
+import { makeK } from './mocks';
 
 describe('getLast', () => {
   it('returns the last item in an array', () => {
@@ -54,20 +55,15 @@ describe('setPaused', () => {
 });
 
 describe('toColor', () => {
-  const makeK = () =>
-    ({
-      rgb: vi.fn((value: unknown) => value),
-    }) as unknown as KAPLAYCtx;
-
   it('converts hex string to color', () => {
-    const k = makeK();
+    const { k } = makeK({ rgb: vi.fn((value: unknown) => value) });
     const hex = '#bada55';
     toColor(k, hex);
     expect(k.rgb).toHaveBeenCalledExactlyOnceWith(hex);
   });
 
   it('returns color', () => {
-    const k = makeK();
+    const { k } = makeK({ rgb: vi.fn((value: unknown) => value) });
     toColor(k, { r: 0, g: 0, b: 0 } as Color);
     expect(k.rgb).not.toHaveBeenCalled();
   });

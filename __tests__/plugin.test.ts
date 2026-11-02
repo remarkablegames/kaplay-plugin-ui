@@ -1,13 +1,5 @@
-import type { KAPLAYCtx } from 'kaplay';
-
 import { uiPlugin } from '../src/plugin';
-
-function makeK(overrides: Record<string, unknown> = {}) {
-  const k = {
-    ...overrides,
-  } as unknown as KAPLAYCtx;
-  return { k };
-}
+import { makeK } from './mocks';
 
 describe('uiPlugin', () => {
   it('registers button helpers', () => {

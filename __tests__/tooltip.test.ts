@@ -3,7 +3,13 @@ import type { GameObj, KAPLAYCtx, TimerController } from 'kaplay';
 import { uiPlugin } from '../src/plugin';
 import { resolveTheme } from '../src/theme';
 import { createTooltip, TOOLTIP_TAG } from '../src/tooltip';
-import { asMock, type Comp, createMockTree, type MockObj } from './mocks';
+import {
+  asMock,
+  type Comp,
+  createMockTree,
+  makeK,
+  type MockObj,
+} from './mocks';
 
 const createMock = () => {
   const timers: {
@@ -15,7 +21,8 @@ const createMock = () => {
   const mousePressHandlers: (() => void)[] = [];
   const isTouchscreen = vi.fn(() => false);
 
-  const { attach, root } = createMockTree();
+  const tree = createMockTree();
+  const { root } = tree;
 
   function addController(list: (() => void)[], cb: () => void) {
     list.push(cb);
@@ -31,51 +38,29 @@ const createMock = () => {
     };
   }
 
-  const add = vi.fn((comps: Comp[]) => attach(root, comps));
-
-  const k = {
-    add,
-    anchor: (value: string) => ({ kind: 'anchor', value }),
-    color: (value: unknown) => ({ kind: 'color', value }),
-    fixed: () => ({ kind: 'fixed' }),
-    isTouchscreen,
-    onMousePress: (cb: () => void) => {
-      return addController(mousePressHandlers, cb);
+  const { k } = makeK(
+    {
+      add: vi.fn((comps: Comp[]) => tree.attach(root, comps)),
+      isTouchscreen,
+      onMousePress: (cb: () => void) => addController(mousePressHandlers, cb),
+      rgb: (hex: string) => hex,
+      wait: vi.fn((time: number, action: () => void) => {
+        const timer = {
+          action,
+          cancel: () => {
+            timer.cancelled = true;
+          },
+          cancelled: false,
+          time,
+        };
+        timers.push(timer);
+        return timer as unknown as TimerController;
+      }),
     },
-    polygon: (pts: { x: number; y: number }[]) => ({ kind: 'polygon', pts }),
-    pos: (value: { x: number; y: number } = { x: 0, y: 0 }) => ({
-      kind: 'pos',
-      value,
-    }),
-    rect: (width: number, height: number, opts?: { radius?: number }) => ({
-      height,
-      kind: 'rect',
-      opts,
-      width,
-    }),
-    rgb: (hex: string) => hex,
-    text: (value: string, opts: { size?: number } = {}) => ({
-      height: opts.size ?? 16,
-      kind: 'text',
-      opts,
-      text: value,
-      width: value.length * 10,
-    }),
-    vec2: (x = 0, y = 0) => ({ x, y }),
-    wait: vi.fn((time: number, action: () => void) => {
-      const timer = {
-        action,
-        cancel: () => {
-          timer.cancelled = true;
-        },
-        cancelled: false,
-        time,
-      };
-      timers.push(timer);
-      return timer as unknown as TimerController;
-    }),
-    z: (value: number) => ({ kind: 'z', value }),
-  } as unknown as KAPLAYCtx;
+    tree,
+  );
+
+  const add = k.add;
 
   return { add, isTouchscreen, k, mousePressHandlers, root, timers };
 };
