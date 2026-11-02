@@ -46,6 +46,26 @@ declare global {
   var addModal: Plugin['addModal'];
 
   /**
+   * Add a tooltip to a game object.
+   *
+   * @param text - The tooltip text.
+   * @param opt - The tooltip options.
+   *
+   * @example
+   * ```js
+   * const button = addButton('Start');
+   *
+   * addTooltip('Start the game', {
+   *   target: button,
+   *   placement: 'right',
+   * });
+   * ```
+   *
+   * @returns The tooltip object with `arrow`, `background`, and `label`.
+   */
+  var addTooltip: Plugin['addTooltip'];
+
+  /**
    * Retrieve the theme.
    *
    * @example

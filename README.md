@@ -10,6 +10,7 @@
 
 - [addButton](#addButton)
 - [addModal](#addModal)
+- [addTooltip](#addTooltip)
 - [getTheme](#getTheme)
 - [setTheme](#setTheme)
 
@@ -217,6 +218,49 @@ Use `modal.exists()` to check whether it is still open.
 
 > [!NOTE]
 > Pausing stops updates and object-level input events on scene objects. Global handlers registered with `onUpdate`, `onKeyPress`, or `onMousePress` still run while a modal is open. Guard those handlers if you don't want them to fire behind a modal.
+
+### addTooltip
+
+Add a tooltip that appears when hovering or tapping a game object:
+
+```ts
+const button = addButton('Start');
+
+addTooltip('Start the game', {
+  target: button,
+});
+```
+
+The target must have an `area()` component. Tooltips default to `placement: 'top'` and `arrow: true`.
+
+Choose where the tooltip appears:
+
+```ts
+addTooltip('Settings', {
+  target: button,
+  placement: 'right', // 'top' | 'right' | 'bottom' | 'left'
+});
+```
+
+Control how it opens:
+
+```ts
+addTooltip('Settings', {
+  target: button,
+  trigger: 'hover', // 'auto' | 'hover' | 'click'
+});
+```
+
+`trigger` defaults to `auto`, which uses hover on desktop and click on touchscreens. In click mode, clicking outside the target dismisses the tooltip. Pass `trigger: 'hover'` on hybrid devices to force hover.
+
+Tooltips use `components.tooltip.background`, `components.tooltip.textColor`, and `components.tooltip.delay`. The hover delay is in milliseconds. Remove the arrow with `arrow: false`.
+
+Update the tooltip text:
+
+```ts
+const tooltip = addTooltip('Hint', { target: button });
+tooltip.label.text = 'New Hint';
+```
 
 ### getTheme
 
