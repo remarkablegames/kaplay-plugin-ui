@@ -177,14 +177,13 @@ export function createButton(
     });
   });
 
-  button.onHover(() => {
+  function applyHoverState() {
     if (disabled) {
       k.setCursor('not-allowed');
       return;
-    } else {
-      k.setCursor('pointer');
     }
 
+    k.setCursor('pointer');
     button.color = toColor(k, hoverColor);
     button.scale = k.vec2(1.05, 1.05);
 
@@ -197,9 +196,9 @@ export function createButton(
       backgroundState = 'hover';
       background.sprite = opt.hoverBackground as string;
     }
-  });
+  }
 
-  button.onHoverEnd(() => {
+  function applyBaseState() {
     k.setCursor('default');
 
     if (disabled) {
@@ -222,9 +221,37 @@ export function createButton(
     if (icon || background) {
       layout();
     }
+  }
+
+  button.onHover(applyHoverState);
+  button.onHoverEnd(applyBaseState);
+
+  // KAPLAY maps touches to the mouse and leaves `mousePos` at the touch point,
+  // so `onHoverEnd` never fires on touchscreens. Apply hover on touch start and
+  // reset it on touch end so the button doesn't stay hovered or pressed.
+  const touchStartController = k.onTouchStart(() => {
+    if (button.isHovering()) {
+      applyHoverState();
+    }
+  });
+
+  const touchEndController = k.onTouchEnd(() => {
+    if (!button.isHovering()) {
+      return;
+    }
+
+    // Defer so it runs after this frame's hover and pressed updates.
+    k.wait(0, () => {
+      if (button.exists()) {
+        applyBaseState();
+      }
+    });
   });
 
   button.onDestroy(() => {
+    touchStartController.cancel();
+    touchEndController.cancel();
+
     if (button.isHovering()) {
       k.setCursor('default');
     }

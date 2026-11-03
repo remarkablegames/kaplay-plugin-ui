@@ -23,12 +23,18 @@ const createMock = ({
     sprite: string;
   }[] = [];
 
+  const touchStartHandlers: (() => void)[] = [];
+  const touchEndHandlers: (() => void)[] = [];
+  const touchStartCancel = vi.fn();
+  const touchEndCancel = vi.fn();
+
   const button = {
     width: 0,
     height: 0,
     add: vi.fn((components: unknown[]) =>
       components[0] === text ? text : components[0],
     ),
+    exists: vi.fn(() => true),
     onClick: vi.fn((cb?: () => void) => cb),
     onHover: vi.fn((cb?: () => void) => cb),
     onHoverEnd: vi.fn((cb?: () => void) => cb),
@@ -37,18 +43,24 @@ const createMock = ({
     isHovering: vi.fn(() => false),
   };
 
-  const rect = vi.fn(() => ({}));
-
   const k = {
     add: vi.fn(() => button),
     anchor: vi.fn(() => ({})),
     area: vi.fn(() => ({})),
     color: vi.fn((value: unknown) => value),
     pos: vi.fn((value?: unknown) => value),
-    rect,
+    rect: vi.fn(() => ({})),
     rgb: vi.fn((hex: string) => hex),
     scale: vi.fn(() => ({})),
     setCursor: vi.fn(),
+    onTouchEnd: vi.fn((cb: () => void) => {
+      touchEndHandlers.push(cb);
+      return { cancel: touchEndCancel };
+    }),
+    onTouchStart: vi.fn((cb: () => void) => {
+      touchStartHandlers.push(cb);
+      return { cancel: touchStartCancel };
+    }),
     sprite: vi.fn((source: string) => {
       const sprite = {
         width: spriteWidth,
@@ -66,7 +78,16 @@ const createMock = ({
     }),
   } as unknown as KAPLAYCtx;
 
-  return { button, k, rect, sprites, text };
+  return {
+    button,
+    k,
+    sprites,
+    text,
+    touchEndCancel,
+    touchEndHandlers,
+    touchStartCancel,
+    touchStartHandlers,
+  };
 };
 
 describe('addButton', () => {
@@ -111,6 +132,120 @@ describe('addButton', () => {
     expect(mockButton.onUpdate).not.toHaveBeenCalled();
   });
 
+  it('applies hover state on touch start', () => {
+    const { k, button: mockButton, touchStartHandlers } = createMock();
+    const button = uiPlugin(k).addButton('Click', { hoverColor: '#123456' });
+    mockButton.isHovering.mockReturnValue(true);
+
+    touchStartHandlers[0]?.();
+
+    expect(button.color).toEqual('#123456');
+    expect(button.scale).toEqual({ x: 1.05, y: 1.05 });
+    expect(k.setCursor).toHaveBeenLastCalledWith('pointer');
+  });
+
+  it('does not apply hover state on touch start outside the button', () => {
+    const { k, button: mockButton, touchStartHandlers } = createMock();
+    const button = uiPlugin(k).addButton('Click', { hoverColor: '#123456' });
+
+    touchStartHandlers[0]?.();
+
+    expect(button.color).toEqual('#4f8cff');
+    expect(mockButton.isHovering).toHaveBeenCalled();
+  });
+
+  it('resets hover and pressed state on touch end', () => {
+    const { k, button: mockButton, touchEndHandlers } = createMock();
+    const button = uiPlugin(k).addButton('Click', {
+      hoverColor: '#123456',
+      pressedColor: '#654321',
+    });
+
+    mockButton.onHover.mock.calls[0]?.[0]?.();
+    mockButton.onClick.mock.calls[0]?.[0]?.();
+    expect(button.color).toEqual('#654321');
+
+    mockButton.isHovering.mockReturnValue(true);
+    touchEndHandlers[0]?.();
+
+    expect(button.color).toEqual('#4f8cff');
+    expect(button.scale).toEqual({ x: 1, y: 1 });
+    expect(k.setCursor).toHaveBeenLastCalledWith('default');
+  });
+
+  it('restores base images on touch end', () => {
+    const {
+      k,
+      button: mockButton,
+      touchEndHandlers,
+    } = createMock({
+      textWidth: 50,
+      textHeight: 18,
+      spriteWidth: 100,
+      spriteHeight: 20,
+    });
+
+    const button = uiPlugin(k).addButton('Click', {
+      icon: 'base-icon',
+      hoverIcon: 'hover-icon',
+      pressedIcon: 'pressed-icon',
+      background: 'base-bg',
+      hoverBackground: 'hover-bg',
+      pressedBackground: 'pressed-bg',
+    });
+
+    mockButton.onHover.mock.calls[0]?.[0]?.();
+    mockButton.onClick.mock.calls[0]?.[0]?.();
+    expect(button.icon?.sprite).toBe('pressed-icon');
+    expect(button.background?.sprite).toBe('pressed-bg');
+
+    mockButton.isHovering.mockReturnValue(true);
+    touchEndHandlers[0]?.();
+
+    expect(button.icon?.sprite).toBe('base-icon');
+    expect(button.background?.sprite).toBe('base-bg');
+  });
+
+  it('does not reset state when a touch ends outside the button', () => {
+    const { k, button: mockButton, touchEndHandlers } = createMock();
+    const button = uiPlugin(k).addButton('Click', { hoverColor: '#123456' });
+
+    mockButton.onHover.mock.calls[0]?.[0]?.();
+    expect(button.color).toEqual('#123456');
+
+    touchEndHandlers[0]?.();
+
+    expect(button.color).toEqual('#123456');
+  });
+
+  it('skips the deferred reset when the button is destroyed', () => {
+    const { k, button: mockButton, touchEndHandlers } = createMock();
+    const button = uiPlugin(k).addButton('Click', { hoverColor: '#123456' });
+
+    mockButton.onHover.mock.calls[0]?.[0]?.();
+    mockButton.isHovering.mockReturnValue(true);
+    mockButton.exists.mockReturnValue(false);
+
+    touchEndHandlers[0]?.();
+
+    expect(button.color).toEqual('#123456');
+  });
+
+  it('cancels touch listeners on destroy', () => {
+    const {
+      k,
+      button: mockButton,
+      touchEndCancel,
+      touchStartCancel,
+    } = createMock();
+    uiPlugin(k).addButton('Click');
+
+    mockButton.onDestroy.mock.calls[0]?.[0]?.();
+
+    expect(touchStartCancel).toHaveBeenCalledOnce();
+    expect(touchEndCancel).toHaveBeenCalledOnce();
+  });
+
   it('sizes button to its label with padding and minWidth', () => {
     const { k, button } = createMock({ textWidth: 30, textHeight: 10 });
     uiPlugin(k).addButton('Click');
@@ -150,29 +285,29 @@ describe('addButton', () => {
   });
 
   it('renders an image-only button without a background', () => {
-    const { k, rect } = createMock({
+    const { k } = createMock({
       textWidth: 0,
       textHeight: 0,
       spriteWidth: 150,
       spriteHeight: 40,
     });
     uiPlugin(k).addButton('', { icon: 'icon' });
-    expect(rect).toHaveBeenCalledWith(0, 0, { fill: false });
+    expect(k.rect).toHaveBeenCalledWith(0, 0, { fill: false });
   });
 
   it('keeps the background for buttons with text and an icon', () => {
-    const { k, rect } = createMock({
+    const { k } = createMock({
       textWidth: 50,
       textHeight: 18,
       spriteWidth: 100,
       spriteHeight: 20,
     });
     uiPlugin(k).addButton('Click', { icon: 'icon', radius: 6 });
-    expect(rect).toHaveBeenCalledWith(0, 0, { radius: 6 });
+    expect(k.rect).toHaveBeenCalledWith(0, 0, { radius: 6 });
   });
 
   it('centers the label over a background image', () => {
-    const { k, button, rect } = createMock({
+    const { k, button } = createMock({
       textWidth: 50,
       textHeight: 18,
       spriteWidth: 100,
@@ -183,7 +318,7 @@ describe('addButton', () => {
       background: 'panel',
     });
 
-    expect(rect).toHaveBeenCalledWith(0, 0, { fill: false });
+    expect(k.rect).toHaveBeenCalledWith(0, 0, { fill: false });
     expect(button).toMatchObject({ width: 100, height: 50 });
     expect(result.background).toMatchObject({ width: 100, height: 50 });
     expect(result.label.pos).toEqual({ x: 0, y: 0 });
