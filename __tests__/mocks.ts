@@ -385,6 +385,8 @@ export function makeK(
     height: () => 600,
     mousePos: () => ({ x: 0, y: 0 }),
     onAdd,
+    onTouchEnd: vi.fn(() => ({ cancel: vi.fn() })),
+    onTouchStart: vi.fn(() => ({ cancel: vi.fn() })),
     opacity: (value: number) => ({ kind: 'opacity', value }),
     polygon: (pts: { x: number; y: number }[]) => ({ kind: 'polygon', pts }),
     pos: (value: { x: number; y: number } = { x: 0, y: 0 }) => ({
