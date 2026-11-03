@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.5.0...v1.5.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* **button:** remove sticky hover on touchscreen ([e094cc6](https://github.com/remarkablegames/kaplay-plugin-ui/commit/e094cc68635df5c844909a1c5371a82df01c4aae))
+
 ## [1.5.0](https://github.com/remarkablegames/kaplay-plugin-ui/compare/v1.4.0...v1.5.0) (2026-11-02)
 
 
